@@ -1,0 +1,130 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Sacramento&display=swap');
+@source "../index.html";
+@source "./**/*.{js,ts,jsx,tsx}";
+
+/* Custom Theme Variables for Tailwind v4 */
+@theme {
+    --font-signature: "Sacramento", cursive;
+
+
+
+    --color-dark: #0b0b0b;
+    --color-dark-alt: #0f0f0f;
+    --color-accent: #8b5cf6;
+    --color-accent-soft: #a78bfa;
+    --color-text: #e5e5e5;
+    
+    --font-sans: "Inter", sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
+}
+
+
+/* Custom styles for Ankit's Portfolio */
+
+:root {
+    --accent: #8b5cf6;
+    --dark: #0b0b0b;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--dark);
+    color: #e5e5e5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@media (min-width: 768px) {
+    body, a, button {
+        cursor: none !important;
+    }
+}
+
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #222;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
+
+/* Glassmorphism Navigation */
+nav {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(11, 11, 11, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+/* Typography Overrides */
+h1, h2, h3 {
+    letter-spacing: -0.02em;
+}
+
+.reveal-title {
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+.reveal-text, .reveal-subtitle, .reveal-extra, .divider {
+    opacity: 0;
+}
+
+.scroll-indicator {
+    opacity: 0;
+}
+
+/* Section Transitions */
+.reveal-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+/* Hover Effects */
+.group:hover img {
+    transform: scale(1.05);
+}
+
+/* Performance Optimized Background */
+#bg-canvas {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+    .reveal-title {
+        font-size: 4rem;
+    }
+}
+
+.profile-img:hover {
+  opacity: 1;
+}
+
+/* Global Blur Effect when Modal is Open */
+body.modal-open main,
+body.modal-open #bg-canvas {
+  filter: blur(12px);
+  transition: filter 0.5s ease;
+}
+
+main, #bg-canvas {
+  transition: filter 0.5s ease;
+}
+
+
