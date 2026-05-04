@@ -94,7 +94,7 @@ const Hero = () => {
 
                     <div className="reveal-subtitle opacity-0 translate-y-10">
                         <a 
-                            href="https://drive.google.com/file/d/1DmaWfa0nL8YQdqRQiqL3bTkQgFqVyaOx/view?usp=drive_link" 
+                            href="https://drive.google.com/file/d/13p7RrIGyp9WXYs6BByyQjLhK-55_tLre/view?usp=drive_link" 
                             target="_blank" 
                             rel="noopener noreferrer"
                             className="inline-flex items-center px-8 py-4 bg-accent/10 border border-accent/40 rounded-full text-white font-mono text-sm uppercase tracking-widest hover:bg-accent hover:text-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(139,92,246,0.1)] group"
