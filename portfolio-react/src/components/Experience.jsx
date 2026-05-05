@@ -58,28 +58,28 @@ const Experience = () => {
     ];
 
     return (
-        <section id="experience" ref={sectionRef} className="py-32 px-6 md:px-24 bg-dark relative overflow-hidden">
+        <section id="experience" ref={sectionRef} className="py-16 sm:py-32 px-4 sm:px-6 md:px-24 bg-dark relative overflow-hidden">
             <div className="max-w-5xl mx-auto">
-                <h2 className="exp-header text-3xl font-bold mb-16 flex items-center">
+                <h2 className="exp-header text-2xl sm:text-3xl font-bold mb-10 sm:mb-16 flex items-center">
                     <span className="text-accent mr-4 font-mono text-sm">03.</span> Experience
                 </h2>
 
-                <div className="relative pl-8 border-l border-white/10 ml-4">
+                <div className="relative pl-4 sm:pl-8 border-l border-white/10 ml-2 sm:ml-4">
                     <div className="absolute -left-[5px] top-0 w-2 h-2 bg-accent rounded-full shadow-[0_0_10px_#8b5cf6]"></div>
                     
                     <div className="exp-info mb-12">
                         <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
-                            <h3 className="text-2xl font-bold text-white">Eagle In Cloud</h3>
+                            <h3 className="text-xl sm:text-2xl font-bold text-white">Eagle In Cloud</h3>
                             <span className="text-xs font-mono text-white/30 uppercase tracking-widest">Jan 2026 — Apr 2026</span>
                         </div>
                         <p className="text-accent font-medium mb-8">Full Stack and Python Developer Intern</p>
                     </div>
 
-                    <ul className="exp-list space-y-6">
+                    <ul className="exp-list space-y-4 sm:space-y-6">
                         {experiences.map((exp, idx) => (
                             <li key={idx} className="exp-item flex items-start space-x-4 group">
                                 <span className="mt-2 w-1.5 h-1.5 bg-accent/40 rounded-full group-hover:bg-accent transition-colors duration-300"></span>
-                                <p className="text-white/60 leading-relaxed group-hover:text-white transition-colors duration-300">{exp}</p>
+                                <p className="text-sm sm:text-base text-white/60 leading-relaxed group-hover:text-white transition-colors duration-300">{exp}</p>
                             </li>
                         ))}
                     </ul>

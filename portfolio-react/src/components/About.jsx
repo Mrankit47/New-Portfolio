@@ -2,12 +2,12 @@ import React from 'react';
 
 const About = () => {
     return (
-        <section id="about" className="py-32 px-6 md:px-24 grid grid-cols-1 md:grid-cols-2 gap-16 items-center bg-dark">
+        <section id="about" className="py-16 sm:py-32 px-4 sm:px-6 md:px-24 grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16 items-center bg-dark">
             <div className="reveal-on-scroll">
-                <h2 className="text-3xl font-bold mb-8 flex items-center">
+                <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 flex items-center">
                     <span className="text-accent mr-4 font-mono text-sm">01.</span> About Me
                 </h2>
-                <div className="space-y-6 text-white/60 leading-relaxed text-lg">
+                <div className="space-y-4 sm:space-y-6 text-white/60 leading-relaxed text-base sm:text-lg">
                     <p>
                         Hello! I'm Ankit Kushwah, a passionate Full Stack Developer with a strong focus on building 
                         secure and scalable web applications. I enjoy creating seamless digital experiences 
@@ -38,7 +38,7 @@ const About = () => {
                             <img
                                 src="/profile_final_clean.png"
                                 alt="Ankit Kushwah"
-                                className="max-h-[350px] md:max-h-[400px] w-auto transition-all duration-700 group-hover:scale-105"
+                                className="max-h-[280px] sm:max-h-[350px] md:max-h-[400px] w-auto transition-all duration-700 group-hover:scale-105"
                             />
                             
                             {/* Modern White Signature inside the card */}

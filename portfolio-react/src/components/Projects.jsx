@@ -45,19 +45,19 @@ const Projects = () => {
     ];
 
     return (
-        <section id="projects" className="py-32 px-6 md:px-24 bg-dark-alt/50 border-y border-white/5">
+        <section id="projects" className="py-16 sm:py-32 px-4 sm:px-6 md:px-24 bg-dark-alt/50 border-y border-white/5">
             <div className="max-w-7xl mx-auto">
-                <h2 className="text-3xl font-bold mb-16 flex items-center text-white">
+                <h2 className="text-2xl sm:text-3xl font-bold mb-10 sm:mb-16 flex items-center text-white">
                     <span className="text-white/40 mr-4 font-mono text-sm">04.</span> Project work
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
                     {projectsData.map((project, idx) => (
                         <div 
                             key={idx} 
-                            className={`group relative bg-dark border border-white/5 p-8 md:p-10 hover:border-accent/30 transition-all duration-500 flex flex-col h-full ${idx === projectsData.length - 1 && projectsData.length % 2 !== 0 ? 'md:col-span-2' : ''}`}
+                            className={`group relative bg-dark border border-white/5 p-5 sm:p-8 md:p-10 hover:border-accent/30 transition-all duration-500 flex flex-col h-full ${idx === projectsData.length - 1 && projectsData.length % 2 !== 0 ? 'md:col-span-2' : ''}`}
                         >
-                            <div className="flex justify-between items-start mb-8">
+                            <div className="flex justify-between items-start mb-4 sm:mb-8">
                                 <div className="font-mono text-[10px] text-white/30 uppercase tracking-[0.2em]">{project.category}</div>
                                 <div className="flex space-x-4">
                                     {project.github && (
@@ -69,9 +69,9 @@ const Projects = () => {
                             </div>
                             
                             <div className="flex-grow">
-                                <h3 className="text-2xl font-bold mb-4 group-hover:text-accent transition-colors">{project.title}</h3>
-                                <p className="text-white/50 mb-8 leading-relaxed text-sm">{project.description}</p>
-                                <div className="flex flex-wrap gap-3 font-mono text-[11px] text-accent/80 uppercase tracking-widest mb-10">
+                                <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 group-hover:text-accent transition-colors">{project.title}</h3>
+                                <p className="text-white/50 mb-4 sm:mb-8 leading-relaxed text-xs sm:text-sm">{project.description}</p>
+                                <div className="flex flex-wrap gap-2 sm:gap-3 font-mono text-[10px] sm:text-[11px] text-accent/80 uppercase tracking-widest mb-6 sm:mb-10">
                                     {project.tech.map((t, i) => <span key={i}>{t}</span>)}
                                 </div>
                             </div>

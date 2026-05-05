@@ -152,18 +152,18 @@ const Contact = () => {
     };
 
     return (
-        <section id="contact" className="py-48 px-6 md:px-24 border-t border-white/5 text-center">
+        <section id="contact" className="py-20 sm:py-48 px-4 sm:px-6 md:px-24 border-t border-white/5 text-center">
             <div className="max-w-4xl mx-auto">
                 <p className="text-accent font-mono text-xs mb-4 uppercase tracking-[0.3em] reveal-on-scroll">// GET IN TOUCH</p>
-                <h2 className="text-5xl md:text-7xl font-black mb-12 reveal-on-scroll delay-100">Let's work together.</h2>
-                <p className="text-white/50 text-xl mb-16 max-w-xl mx-auto reveal-on-scroll delay-200">
+                <h2 className="text-3xl sm:text-5xl md:text-7xl font-black mb-6 sm:mb-12 reveal-on-scroll delay-100">Let's work together.</h2>
+                <p className="text-white/50 text-base sm:text-xl mb-10 sm:mb-16 max-w-xl mx-auto reveal-on-scroll delay-200">
                     Currently open to full-time roles or freelance projects. I'd love to hear about what you're building.
                 </p>
 
                 <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8 reveal-on-scroll delay-300">
                     <button
                         onClick={() => toggleModal(true)}
-                        className="px-10 py-5 bg-accent hover:bg-accent-soft text-dark font-bold text-sm uppercase tracking-widest transition-all duration-300"
+                        className="px-8 sm:px-10 py-4 sm:py-5 bg-accent hover:bg-accent-soft text-dark font-bold text-xs sm:text-sm uppercase tracking-widest transition-all duration-300"
                     >
                         Email Me
                     </button>

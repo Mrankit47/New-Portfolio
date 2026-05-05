@@ -37,13 +37,13 @@ const Skills = () => {
     ];
 
     return (
-        <section id="skills" className="py-32 px-6 md:px-24 bg-dark-alt/50 border-y border-white/5">
+        <section id="skills" className="py-16 sm:py-32 px-4 sm:px-6 md:px-24 bg-dark-alt/50 border-y border-white/5">
             <div className="max-w-7xl mx-auto">
-                <h2 className="text-3xl font-bold mb-16 flex items-center reveal-on-scroll">
+                <h2 className="text-2xl sm:text-3xl font-bold mb-10 sm:mb-16 flex items-center reveal-on-scroll">
                     <span className="text-accent mr-4 font-mono text-sm">02.</span> Tech Stack
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12">
                     {skillsData.map((category, idx) => (
                         <div key={idx} className={`reveal-on-scroll delay-${idx * 100}`}>
                             <h3 className="text-xs font-mono text-white/40 mb-6 uppercase tracking-widest">

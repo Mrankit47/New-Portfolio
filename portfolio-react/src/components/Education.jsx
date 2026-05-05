@@ -2,13 +2,13 @@ import React from 'react';
 
 const Education = () => {
     return (
-        <section id="education" className="py-32 px-6 md:px-24 max-w-7xl mx-auto grid md:grid-cols-2 gap-24">
+        <section id="education" className="py-16 sm:py-32 px-4 sm:px-6 md:px-24 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-24">
             <div className="reveal-on-scroll">
-                <h2 className="text-3xl font-bold mb-16 flex items-center">
+                <h2 className="text-2xl sm:text-3xl font-bold mb-10 sm:mb-16 flex items-center">
                     <span className="text-accent mr-4 font-mono text-sm">05.</span>
                     Education
                 </h2>
-                <div className="space-y-12">
+                <div className="space-y-8 sm:space-y-12">
                     <div>
                         <h3 className="text-xl font-bold mb-2">Master of Computer Application (MCA)</h3>
                         <p className="text-white/50 mb-1">Shri Vaishnav Vidyapeeth Vishwavidyalaya</p>
@@ -33,11 +33,11 @@ const Education = () => {
             </div>
 
             <div className="reveal-on-scroll delay-200">
-                <h2 className="text-3xl font-bold mb-16 flex items-center">
+                <h2 className="text-2xl sm:text-3xl font-bold mb-10 sm:mb-16 flex items-center">
                     <span className="text-accent mr-4 font-mono text-sm">06.</span>
                     Certifications
                 </h2>
-                <ul className="space-y-6 font-mono text-sm text-white/60">
+                <ul className="space-y-4 sm:space-y-6 font-mono text-xs sm:text-sm text-white/60">
                     <li className="flex items-start group">
                         <span className="text-accent mr-4 group-hover:translate-x-1 transition-transform">→</span>
                         <a href="https://drive.google.com/file/d/1GGEvuDIY8fd-rqZXQOhRtk8YXFhrjGjn/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">Internship Certificate – Eagle In Cloud (4 months)</a>

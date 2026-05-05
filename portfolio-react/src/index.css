@@ -108,7 +108,13 @@ h1, h2, h3 {
 /* Responsive Tweaks */
 @media (max-width: 768px) {
     .reveal-title {
-        font-size: 4rem;
+        font-size: 2.5rem;
+    }
+}
+
+@media (min-width: 640px) and (max-width: 768px) {
+    .reveal-title {
+        font-size: 3rem;
     }
 }
 

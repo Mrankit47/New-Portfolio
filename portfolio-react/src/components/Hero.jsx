@@ -74,21 +74,21 @@ const Hero = () => {
     }, [charIndex, isDeleting, roleIndex]);
 
     return (
-        <section className="min-h-screen flex items-center px-6 md:px-24 pt-32 pb-20 relative overflow-hidden">
-            <div className="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <section className="min-h-screen flex items-center px-4 sm:px-6 md:px-24 pt-24 sm:pt-32 pb-12 sm:pb-20 relative overflow-hidden">
+            <div className="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16 items-center">
                 
                 <div className="relative z-10 text-center lg:text-left">
                     <p className="text-accent font-mono text-sm md:text-base mb-4 uppercase tracking-[0.3em] reveal-text opacity-0 translate-y-10 min-h-[1.5rem]">
                         // {typewriterText}<span className="animate-pulse">|</span>
                     </p>
                     
-                    <h1 ref={titleRef} className="text-5xl md:text-7xl lg:text-[9rem] font-black leading-[1.1] mb-8 reveal-title opacity-0 translate-y-20 selection:text-accent">
+                    <h1 ref={titleRef} className="text-4xl sm:text-5xl md:text-7xl lg:text-[9rem] font-black leading-[1.1] mb-4 sm:mb-8 reveal-title opacity-0 translate-y-20 selection:text-accent">
                         ANKIT<br />KUSHWAH
                     </h1>
                     
-                    <div className="w-0 h-px bg-white/20 mb-8 divider opacity-0 mx-auto lg:mx-0"></div>
+                    <div className="w-0 h-px bg-white/20 mb-4 sm:mb-8 divider opacity-0 mx-auto lg:mx-0"></div>
                     
-                    <p className="text-white/60 text-base md:text-xl max-w-md mx-auto lg:mx-0 leading-relaxed reveal-subtitle opacity-0 translate-y-10 mb-10">
+                    <p className="text-white/60 text-sm sm:text-base md:text-xl max-w-md mx-auto lg:mx-0 leading-relaxed reveal-subtitle opacity-0 translate-y-10 mb-6 sm:mb-10">
                         Building secure, scalable web applications with clean UI and strong backend systems.
                     </p>
 
@@ -97,7 +97,7 @@ const Hero = () => {
                             href="https://drive.google.com/file/d/13p7RrIGyp9WXYs6BByyQjLhK-55_tLre/view?usp=drive_link" 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="inline-flex items-center px-8 py-4 bg-accent/10 border border-accent/40 rounded-full text-white font-mono text-sm uppercase tracking-widest hover:bg-accent hover:text-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(139,92,246,0.1)] group"
+                            className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-accent/10 border border-accent/40 rounded-full text-white font-mono text-xs sm:text-sm uppercase tracking-widest hover:bg-accent hover:text-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(139,92,246,0.1)] group"
                         >
                             View Resume
                             <svg className="ml-3 w-4 h-4 transform group-hover:translate-y-[-2px] transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
