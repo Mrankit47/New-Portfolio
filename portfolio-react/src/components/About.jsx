@@ -105,12 +105,12 @@ const About = () => {
                     </p>
                     <p className="about-para">
                         My journey in web development has led me to work with a diverse range of technologies, 
-                        from <span className="text-white">Python (Django)</span> and <span className="text-white">PostgreSQL</span> on the backend to 
-                        <span className="text-white"> React</span> and <span className="text-white">Tailwind CSS</span> on the frontend.
+                        from <a href="https://docs.djangoproject.com/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-accent transition-colors">Python (Django)</a> and <a href="https://www.postgresql.org/docs/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-accent transition-colors">PostgreSQL</a> on the backend to 
+                        <a href="https://react.dev/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-accent transition-colors"> React</a> and <a href="https://tailwindcss.com/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-accent transition-colors">Tailwind CSS</a> on the frontend.
                     </p>
                     <p className="about-para">
-                        I'm currently focused on expanding my expertise in <span className="text-accent">ERP systems</span> and 
-                        <span className="text-accent"> Lead Management solutions</span>, always striving to write clean, 
+                        I'm currently focused on expanding my expertise in <a href="https://tally-erp-system.onrender.com" target="_blank" rel="noopener noreferrer" className="text-accent hover:text-white transition-colors underline decoration-accent/30 underline-offset-4">ERP systems</a> and 
+                        <a href="https://leads-management-egfi.onrender.com" target="_blank" rel="noopener noreferrer" className="text-accent hover:text-white transition-colors underline decoration-accent/30 underline-offset-4"> Lead Management solutions</a>, always striving to write clean, 
                         maintainable code that solves real-world problems.
                     </p>
                 </div>

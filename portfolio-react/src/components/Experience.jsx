@@ -9,6 +9,18 @@ const Experience = () => {
 
     useEffect(() => {
         const ctx = gsap.context(() => {
+            // Timeline line animation
+            gsap.to(".exp-line", {
+                scaleY: 1,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: ".exp-timeline",
+                    start: "top 70%",
+                    end: "bottom 80%",
+                    scrub: 1,
+                }
+            });
+
             // Header animation
             gsap.from(".exp-header", {
                 y: 30,
@@ -64,10 +76,17 @@ const Experience = () => {
                     <span className="text-accent mr-4 font-mono text-sm">03.</span> Experience
                 </h2>
 
-                <div className="relative pl-4 sm:pl-8 border-l border-white/10 ml-2 sm:ml-4">
-                    <div className="absolute -left-[5px] top-0 w-2 h-2 bg-accent rounded-full shadow-[0_0_10px_#8b5cf6]"></div>
+                <div className="exp-timeline relative pl-4 sm:pl-8 ml-2 sm:ml-4">
+                    {/* The Background Line */}
+                    <div className="absolute top-0 bottom-0 left-0 w-[2px] bg-white/10"></div>
                     
-                    <div className="exp-info mb-12">
+                    {/* The Animated Accent Line */}
+                    <div className="exp-line absolute top-0 bottom-0 left-0 w-[2px] bg-accent origin-top scale-y-0"></div>
+
+                    {/* Top Dot */}
+                    <div className="absolute -left-[3px] top-0 w-2 h-2 bg-accent rounded-full shadow-[0_0_10px_#8b5cf6] z-10"></div>
+                    
+                    <div className="exp-info mb-12 relative z-10">
                         <div className="flex flex-col md:flex-row md:items-center justify-between mb-2">
                             <h3 className="text-xl sm:text-2xl font-bold text-white">Eagle In Cloud</h3>
                             <span className="text-xs font-mono text-white/30 uppercase tracking-widest">Jan 2026 — Apr 2026</span>
