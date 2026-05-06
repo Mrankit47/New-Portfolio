@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Projects = () => {
     const projectsData = [
@@ -44,20 +48,53 @@ const Projects = () => {
         }
     ];
 
+    const sectionRef = useRef(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            // Heading animation
+            gsap.fromTo(".projects-heading", 
+                { x: -50, opacity: 0 },
+                { x: 0, opacity: 1, duration: 1, ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: ".projects-heading",
+                        start: "top 90%",
+                        toggleActions: "play none none none",
+                    }
+                }
+            );
+
+            // Project cards stagger in
+            gsap.fromTo(".project-card", 
+                { y: 50, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: ".projects-grid",
+                        start: "top 90%",
+                        toggleActions: "play none none none",
+                    }
+                }
+            );
+        }, sectionRef);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <section id="projects" className="py-16 sm:py-32 px-4 sm:px-6 md:px-24 bg-dark-alt/50 border-y border-white/5">
+        <section id="projects" ref={sectionRef} className="py-16 sm:py-32 px-4 sm:px-6 md:px-24 bg-dark-alt/50 border-y border-white/5">
             <div className="max-w-7xl mx-auto">
-                <h2 className="text-2xl sm:text-3xl font-bold mb-10 sm:mb-16 flex items-center text-white">
+                <h2 className="projects-heading text-2xl sm:text-3xl font-bold mb-10 sm:mb-16 flex items-center text-white">
                     <span className="text-white/40 mr-4 font-mono text-sm">04.</span> Project work
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
+                <div className="projects-grid grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
                     {projectsData.map((project, idx) => (
                         <div 
                             key={idx} 
-                            className={`group relative bg-dark border border-white/5 p-5 sm:p-8 md:p-10 hover:border-accent/30 transition-all duration-500 flex flex-col h-full ${idx === projectsData.length - 1 && projectsData.length % 2 !== 0 ? 'md:col-span-2' : ''}`}
+                            className={`project-card ${idx === projectsData.length - 1 && projectsData.length % 2 !== 0 ? 'md:col-span-2' : ''}`}
                         >
-                            <div className="flex justify-between items-start mb-4 sm:mb-8">
+                            <div className="group relative bg-dark border border-white/5 p-5 sm:p-8 md:p-10 hover:border-accent/50 hover:-translate-y-3 hover:shadow-[0_15px_40px_rgba(139,92,246,0.25)] transition-all duration-500 flex flex-col h-full">
+                                <div className="flex justify-between items-start mb-4 sm:mb-8">
                                 <div className="font-mono text-[10px] text-white/30 uppercase tracking-[0.2em]">{project.category}</div>
                                 <div className="flex space-x-4">
                                     {project.github && (
@@ -92,6 +129,7 @@ const Projects = () => {
                                 </a>
                             </div>
                         </div>
+                    </div>
                     ))}
                 </div>
             </div>

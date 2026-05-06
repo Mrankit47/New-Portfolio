@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Skills = () => {
     const skillsData = [
@@ -36,16 +40,48 @@ const Skills = () => {
         }
     ];
 
+    const sectionRef = useRef(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            // Heading fade in
+            gsap.from(".skills-heading", {
+                y: 30,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: ".skills-heading",
+                    start: "top 85%",
+                }
+            });
+
+            // All skill columns fade in together
+            gsap.from(".skill-column", {
+                y: 40,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: ".skills-grid",
+                    start: "top 80%",
+                }
+            });
+        }, sectionRef);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <section id="skills" className="py-16 sm:py-32 px-4 sm:px-6 md:px-24 bg-dark-alt/50 border-y border-white/5">
+        <section id="skills" ref={sectionRef} className="py-16 sm:py-32 px-4 sm:px-6 md:px-24 bg-dark-alt/50 border-y border-white/5">
             <div className="max-w-7xl mx-auto">
-                <h2 className="text-2xl sm:text-3xl font-bold mb-10 sm:mb-16 flex items-center reveal-on-scroll">
+                <h2 className="skills-heading text-2xl sm:text-3xl font-bold mb-10 sm:mb-16 flex items-center">
                     <span className="text-accent mr-4 font-mono text-sm">02.</span> Tech Stack
                 </h2>
 
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12">
+                <div className="skills-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12">
                     {skillsData.map((category, idx) => (
-                        <div key={idx} className={`reveal-on-scroll delay-${idx * 100}`}>
+                        <div key={idx} className="skill-column">
                             <h3 className="text-xs font-mono text-white/40 mb-6 uppercase tracking-widest">
                                 {category.category}
                             </h3>
@@ -53,27 +89,20 @@ const Skills = () => {
                                 {category.items.map((skill, sIdx) => (
                                     <li key={sIdx} className="flex items-center space-x-4 group">
                                         <div 
-                                            className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white/5 border border-white/5 transition-all duration-500 group-hover:scale-110 group-hover:bg-white/10"
-                                            style={{ 
-                                                boxShadow: `0 0 0px rgba(0,0,0,0)`,
-                                                filter: `drop-shadow(0 0 0px rgba(0,0,0,0))` 
-                                            }}
+                                            className="w-8 h-8 flex items-center justify-center transition-all duration-500 group-hover:scale-125" 
+                                            style={{ color: 'rgba(255,255,255,0.4)', filter: 'grayscale(1) brightness(0.6)' }}
                                             onMouseEnter={(e) => {
-                                                e.currentTarget.style.boxShadow = `0 10px 30px -10px ${skill.color}40`;
-                                                e.currentTarget.style.filter = `drop-shadow(0 0 8px ${skill.color}60)`;
-                                                e.currentTarget.style.borderColor = `${skill.color}30`;
+                                                e.currentTarget.style.color = '#8b5cf6';
+                                                e.currentTarget.style.filter = 'grayscale(0) brightness(1.2) drop-shadow(0 0 12px rgba(139,92,246,0.9)) drop-shadow(0 0 24px rgba(139,92,246,0.4))';
                                             }}
                                             onMouseLeave={(e) => {
-                                                e.currentTarget.style.boxShadow = 'none';
-                                                e.currentTarget.style.filter = 'none';
-                                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)';
+                                                e.currentTarget.style.color = 'rgba(255,255,255,0.4)';
+                                                e.currentTarget.style.filter = 'grayscale(1) brightness(0.6)';
                                             }}
                                         >
-                                            <div className="w-6 h-6 flex items-center justify-center transition-transform duration-500 group-hover:rotate-[10deg]" style={{ color: skill.color }}>
-                                                {skill.svg}
-                                            </div>
+                                            {skill.svg}
                                         </div>
-                                        <span className="font-bold text-lg text-white/70 group-hover:text-white transition-colors duration-300">
+                                        <span className="font-bold text-lg text-white/50 group-hover:text-white transition-colors duration-300">
                                             {skill.name}
                                         </span>
                                     </li>

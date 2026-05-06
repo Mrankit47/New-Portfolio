@@ -70,7 +70,7 @@ const Home = () => {
         <div className="text-text selection:bg-accent selection:text-white overflow-x-hidden">
             <div
                 id="progress-bar"
-                className="fixed top-0 left-0 h-1 bg-accent z-[100] transition-all duration-300"
+                className="fixed top-0 left-0 h-1 bg-accent z-[200] transition-all duration-300"
             ></div>
             
             <CustomCursor />

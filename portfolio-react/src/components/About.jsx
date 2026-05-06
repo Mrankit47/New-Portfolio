@@ -1,34 +1,124 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
+    const sectionRef = useRef(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            // Heading slides in from left
+            gsap.from(".about-heading", {
+                x: -60,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: ".about-heading",
+                    start: "top 85%",
+                }
+            });
+
+            // Each paragraph fades in with stagger
+            gsap.from(".about-para", {
+                y: 30,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.25,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: ".about-text",
+                    start: "top 80%",
+                }
+            });
+
+            // Profile image scales up
+            gsap.from(".about-image", {
+                scale: 0.85,
+                opacity: 0,
+                duration: 1.2,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: ".about-image",
+                    start: "top 80%",
+                }
+            });
+
+            // Decorative corner elements animate in
+            gsap.from(".corner-tl", {
+                x: -20,
+                y: -20,
+                opacity: 0,
+                duration: 0.8,
+                delay: 0.4,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: ".about-image",
+                    start: "top 80%",
+                }
+            });
+
+            gsap.from(".corner-br", {
+                x: 20,
+                y: 20,
+                opacity: 0,
+                duration: 0.8,
+                delay: 0.5,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: ".about-image",
+                    start: "top 80%",
+                }
+            });
+
+            // Signature fades in
+            gsap.from(".about-signature", {
+                opacity: 0,
+                y: 10,
+                duration: 0.8,
+                delay: 0.6,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: ".about-image",
+                    start: "top 80%",
+                }
+            });
+
+        }, sectionRef);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <section id="about" className="py-16 sm:py-32 px-4 sm:px-6 md:px-24 grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16 items-center bg-dark">
-            <div className="reveal-on-scroll">
-                <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 flex items-center">
+        <section id="about" ref={sectionRef} className="py-16 sm:py-32 px-4 sm:px-6 md:px-24 grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16 items-center bg-dark">
+            <div>
+                <h2 className="about-heading text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 flex items-center">
                     <span className="text-accent mr-4 font-mono text-sm">01.</span> About Me
                 </h2>
-                <div className="space-y-4 sm:space-y-6 text-white/60 leading-relaxed text-base sm:text-lg">
-                    <p>
+                <div className="about-text space-y-4 sm:space-y-6 text-white/60 leading-relaxed text-base sm:text-lg">
+                    <p className="about-para">
                         Hello! I'm Ankit Kushwah, a passionate Full Stack Developer with a strong focus on building 
                         secure and scalable web applications. I enjoy creating seamless digital experiences 
                         that combine robust backend logic with intuitive frontend design.
                     </p>
-                    <p>
+                    <p className="about-para">
                         My journey in web development has led me to work with a diverse range of technologies, 
                         from <span className="text-white">Python (Django)</span> and <span className="text-white">PostgreSQL</span> on the backend to 
-                        <span className="text-white">React</span> and <span className="text-white">Tailwind CSS</span> on the frontend.
+                        <span className="text-white"> React</span> and <span className="text-white">Tailwind CSS</span> on the frontend.
                     </p>
-                    <p>
+                    <p className="about-para">
                         I'm currently focused on expanding my expertise in <span className="text-accent">ERP systems</span> and 
-                        <span className="text-accent">Lead Management solutions</span>, always striving to write clean, 
+                        <span className="text-accent"> Lead Management solutions</span>, always striving to write clean, 
                         maintainable code that solves real-world problems.
                     </p>
                 </div>
             </div>
             
-            <div className="relative reveal-on-scroll delay-200 flex justify-center">
+            <div className="relative flex justify-center">
                 {/* Unique Geometric Container */}
-                <div className="relative group">
+                <div className="about-image relative group">
                     {/* Background Glow */}
                     <div className="absolute -inset-4 bg-accent/20 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
                     
@@ -42,7 +132,7 @@ const About = () => {
                             />
                             
                             {/* Modern White Signature inside the card */}
-                            <div className="absolute bottom-6 right-12 z-20 pointer-events-none select-none">
+                            <div className="about-signature absolute bottom-6 right-12 z-20 pointer-events-none select-none">
                                 <span className="font-signature text-3xl md:text-4xl text-white font-normal -rotate-18 block">
                                     Ankit
                                 </span>
@@ -51,8 +141,8 @@ const About = () => {
                     </div>
 
                     {/* Decorative Elements */}
-                    <div className="absolute -top-4 -left-4 w-12 h-12 border-t-2 border-l-2 border-accent opacity-50"></div>
-                    <div className="absolute -bottom-4 -right-4 w-12 h-12 border-b-2 border-r-2 border-accent opacity-50"></div>
+                    <div className="corner-tl absolute -top-4 -left-4 w-12 h-12 border-t-2 border-l-2 border-accent opacity-50"></div>
+                    <div className="corner-br absolute -bottom-4 -right-4 w-12 h-12 border-b-2 border-r-2 border-accent opacity-50"></div>
                 </div>
             </div>
         </section>
