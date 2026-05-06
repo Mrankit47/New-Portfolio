@@ -37,6 +37,14 @@ const Skills = () => {
                 { name: "VS Code", color: "#007ACC", svg: <svg viewBox="0 0 128 128"><path fill="currentColor" d="M114.3 22.8l-23.7-9L66.7 30l23.9 16.2l23.7-23.4zM13.7 22.8l23.7-9L61.3 30L37.4 46.2l-23.7-23.4zM64 128c35.3 0 64-28.7 64-64S99.3 0 64 0S0 28.7 0 64s28.7 64 64 64zm0-98.3l37.4 25.1L64 79.9l-37.4-25.1L64 29.7z"/></svg> },
                 { name: "UI/UX", color: "#FFB000", svg: <svg viewBox="0 0 128 128"><path fill="currentColor" d="M64 128c35.3 0 64-28.7 64-64S99.3 0 64 0S0 28.7 0 64s28.7 64 64 64zM64 22c5.5 0 10 4.5 10 10s-4.5 10-10 10s-10-4.5-10-10s4.5-10 10-10zm-10 32h20v54H54V54z"/></svg> },
             ]
+        },
+        {
+            category: "Deployment",
+            items: [
+                { name: "Vercel", color: "#FFFFFF", svg: <svg viewBox="0 0 24 24"><path fill="currentColor" d="m12 1.608 12 20.784H0Z"/></svg> },
+                { name: "Render", color: "#46E3B7", svg: <svg viewBox="0 0 24 24"><path fill="currentColor" d="M18.263.007c-3.121-.147-5.744 2.109-6.192 5.082-.018.138-.045.272-.067.405-.696 3.703-3.936 6.507-7.827 6.507-1.388 0-2.691-.356-3.825-.979a.2024.2024 0 0 0-.302.178V24H12v-8.999c0-1.656 1.338-3 2.987-3h2.988c3.382 0 6.103-2.817 5.97-6.244-.12-3.084-2.61-5.603-5.682-5.75"/></svg> },
+                { name: "Railway", color: "#FFFFFF", svg: <svg viewBox="0 0 24 24"><path fill="currentColor" d="M.113 10.27A13.026 13.026 0 000 11.48h18.23c-.064-.125-.15-.237-.235-.347-3.117-4.027-4.793-3.677-7.19-3.78-.8-.034-1.34-.048-4.524-.048-1.704 0-3.555.005-5.358.01-.234.63-.459 1.24-.567 1.737h9.342v1.216H.113v.002zm18.26 2.426H.009c.02.326.05.645.094.961h16.955c.754 0 1.179-.429 1.315-.96zm-17.318 4.28s2.81 6.902 10.93 7.024c4.855 0 9.027-2.883 10.92-7.024H1.056zM11.988 0C7.5 0 3.593 2.466 1.531 6.108l4.75-.005v-.002c3.71 0 3.849.016 4.573.047l.448.016c1.563.052 3.485.22 4.996 1.364.82.621 2.007 1.99 2.712 2.965.654.902.842 1.94.396 2.934-.408.914-1.289 1.458-2.353 1.458H.391s.099.42.249.886h22.748A12.026 12.026 0 0024 12.005C24 5.377 18.621 0 11.988 0z"/></svg> },
+            ]
         }
     ];
 
@@ -79,7 +87,7 @@ const Skills = () => {
                     <span className="text-accent mr-4 font-mono text-sm">02.</span> Tech Stack
                 </h2>
 
-                <div className="skills-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-12">
+                <div className="skills-grid grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 sm:gap-12">
                     {skillsData.map((category, idx) => (
                         <div key={idx} className="skill-column">
                             <h3 className="text-xs font-mono text-white/40 mb-6 uppercase tracking-widest">
