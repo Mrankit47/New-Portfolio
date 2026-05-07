@@ -68,7 +68,7 @@ const TechCard = ({ name, iconClass, svg, color, index }) => {
     return (
         <div
             ref={cardRef}
-            className={`tech-card relative p-3 flex flex-col items-center justify-center rounded-2xl cursor-pointer select-none border border-white/[0.04] bg-white/[0.01] backdrop-blur-md transition-all duration-300 ease-out preserve-3d group ${floatClass}`}
+            className={`tech-card relative p-2 sm:p-2.5 flex flex-col items-center justify-center rounded-2xl cursor-pointer select-none border border-white/[0.04] bg-white/[0.01] backdrop-blur-md transition-all duration-300 ease-out preserve-3d group ${floatClass}`}
             style={glowStyle}
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
@@ -85,22 +85,22 @@ const TechCard = ({ name, iconClass, svg, color, index }) => {
                 }}
             />
 
-            {/* Icon Wrapper (Sized smaller and sleeker as requested) */}
+            {/* Icon Wrapper (Sized even smaller as requested) */}
             <div 
-                className="w-10 h-10 flex items-center justify-center mb-2 transition-all duration-300 preserve-3d"
+                className="w-8 h-8 flex items-center justify-center mb-1.5 transition-all duration-300 preserve-3d"
                 style={iconStyle}
             >
                 {svg ? (
-                    <div style={{ color }} className="w-7 h-7 flex items-center justify-center">
+                    <div style={{ color }} className="w-5 h-5 flex items-center justify-center">
                         {svg}
                     </div>
                 ) : (
-                    <i className={`${iconClass} text-2xl sm:text-3xl`} />
+                    <i className={`${iconClass} text-lg sm:text-xl`} />
                 )}
             </div>
 
             {/* Tech Name Label */}
-            <span className="text-[10px] sm:text-xs font-mono font-medium text-white/50 group-hover:text-white transition-colors duration-300 transform preserve-3d group-hover:translateZ(12px) text-center">
+            <span className="text-[9px] sm:text-[11px] font-mono font-medium text-white/50 group-hover:text-white transition-colors duration-300 transform preserve-3d group-hover:translateZ(12px) text-center">
                 {name}
             </span>
         </div>
@@ -121,19 +121,19 @@ const TechCategory = ({ category, items, catIdx }) => {
                     <div className="absolute inset-0 cyber-grid-bg opacity-[0.03] pointer-events-none" />
 
                     {/* Category Title Header */}
-                    <div className="flex items-center justify-between mb-4 relative z-10 border-b border-white/[0.04] pb-3">
-                        <div className="flex items-center space-x-3">
-                            <span className="font-mono text-accent text-sm sm:text-base font-semibold">
+                    <div className="flex items-center justify-between mb-3 relative z-10 border-b border-white/[0.04] pb-2">
+                        <div className="flex items-center space-x-2">
+                            <span className="font-mono text-accent text-xs sm:text-sm font-semibold">
                                 &lt;0{catIdx + 1}&gt;
                             </span>
-                            <h3 className="text-base sm:text-lg font-bold uppercase tracking-wider text-white">
+                            <h3 className="text-xs sm:text-sm font-semibold uppercase tracking-wide text-white">
                                 {category}
                             </h3>
                         </div>
                         {/* Status blinking dot for cyber UI look */}
-                        <div className="flex items-center space-x-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                            <span className="text-[10px] font-mono text-white/30 uppercase tracking-widest hidden sm:inline">
+                        <div className="flex items-center space-x-1.5">
+                            <span className="w-1 h-1 rounded-full bg-accent animate-pulse" />
+                            <span className="text-[9px] font-mono text-white/30 uppercase tracking-widest hidden sm:inline">
                                 ONLINE
                             </span>
                         </div>
@@ -203,7 +203,7 @@ const Skills = () => {
                     name: "Antigravity", 
                     color: "#A78BFA", 
                     svg: (
-                        <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5">
                             <circle cx="12" cy="12" r="9" strokeDasharray="3 3" className="animate-spin" style={{ animationDuration: '15s' }} />
                             <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1" opacity="0.5" />
                             <path d="M12 8l3 4h-6z" fill="currentColor" />
@@ -220,12 +220,12 @@ const Skills = () => {
                 { 
                     name: "Render", 
                     color: "#46E3B7", 
-                    svg: <svg viewBox="0 0 24 24" className="w-7 h-7" fill="currentColor"><path d="M18.263.007c-3.121-.147-5.744 2.109-6.192 5.082-.018.138-.045.272-.067.405-.696 3.703-3.936 6.507-7.827 6.507-1.388 0-2.691-.356-3.825-.979a.2024.2024 0 0 0-.302.178V24H12v-8.999c0-1.656 1.338-3 2.987-3h2.988c3.382 0 6.103-2.817 5.97-6.244-.12-3.084-2.61-5.603-5.682-5.75"/></svg> 
+                    svg: <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor"><path d="M18.263.007c-3.121-.147-5.744 2.109-6.192 5.082-.018.138-.045.272-.067.405-.696 3.703-3.936 6.507-7.827 6.507-1.388 0-2.691-.356-3.825-.979a.2024.2024 0 0 0-.302.178V24H12v-8.999c0-1.656 1.338-3 2.987-3h2.988c3.382 0 6.103-2.817 5.97-6.244-.12-3.084-2.61-5.603-5.682-5.75"/></svg> 
                 },
                 { 
                     name: "Railway", 
                     color: "#F1F1F1", 
-                    svg: <svg viewBox="0 0 24 24" className="w-7 h-7" fill="currentColor"><path d="M.113 10.27A13.026 13.026 0 000 11.48h18.23c-.064-.125-.15-.237-.235-.347-3.117-4.027-4.793-3.677-7.19-3.78-.8-.034-1.34-.048-4.524-.048-1.704 0-3.555.005-5.358.01-.234.63-.459 1.24-.567 1.737h9.342v1.216H.113v.002zm18.26 2.426H.009c.02.326.05.645.094.961h16.955c.754 0 1.179-.429 1.315-.96zm-17.318 4.28s2.81 6.902 10.93 7.024c4.855 0 9.027-2.883 10.92-7.024H1.056zM11.988 0C7.5 0 3.593 2.466 1.531 6.108l4.75-.005v-.002c3.71 0 3.849.016 4.573.047l.448.016c1.563.052 3.485.22 4.996 1.364.82.621 2.007 1.99 2.712 2.965.654.902.842 1.94.396 2.934-.408.914-1.289 1.458-2.353 1.458H.391s.099.42.249.886h22.748A12.026 12.026 0 0024 12.005C24 5.377 18.621 0 11.988 0z"/></svg> 
+                    svg: <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor"><path d="M.113 10.27A13.026 13.026 0 000 11.48h18.23c-.064-.125-.15-.237-.235-.347-3.117-4.027-4.793-3.677-7.19-3.78-.8-.034-1.34-.048-4.524-.048-1.704 0-3.555.005-5.358.01-.234.63-.459 1.24-.567 1.737h9.342v1.216H.113v.002zm18.26 2.426H.009c.02.326.05.645.094.961h16.955c.754 0 1.179-.429 1.315-.96zm-17.318 4.28s2.81 6.902 10.93 7.024c4.855 0 9.027-2.883 10.92-7.024H1.056zM11.988 0C7.5 0 3.593 2.466 1.531 6.108l4.75-.005v-.002c3.71 0 3.849.016 4.573.047l.448.016c1.563.052 3.485.22 4.996 1.364.82.621 2.007 1.99 2.712 2.965.654.902.842 1.94.396 2.934-.408.914-1.289 1.458-2.353 1.458H.391s.099.42.249.886h22.748A12.026 12.026 0 0024 12.005C24 5.377 18.621 0 11.988 0z"/></svg> 
                 },
             ]
         }
@@ -297,23 +297,10 @@ const Skills = () => {
             </div>
 
             <div className="max-w-7xl mx-auto relative z-10">
-                {/* Header Title with futuristic monospaced indicators */}
-                <div className="skills-heading flex flex-col sm:flex-row sm:items-center justify-between mb-16 sm:mb-24">
-                    <div>
-                        <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white flex items-center">
-                            <span className="text-accent mr-3 sm:mr-4 font-mono text-base sm:text-lg font-semibold">&lt;02.&gt;</span> 
-                            TECH STACK
-                        </h2>
-                        <p className="mt-3 text-sm sm:text-base text-white/40 font-mono tracking-wide">
-                            // CRAFTING DIGITAL ARCHITECTURE WITH CUTTING-EDGE SOLUTIONS
-                        </p>
-                    </div>
-                    {/* Retro Cyber-HUD detail indicator */}
-                    <div className="hidden lg:flex items-center space-x-4 font-mono text-xs text-white/30 border border-white/10 rounded-full px-5 py-2 backdrop-blur-md">
-                        <span className="w-2 h-2 rounded-full bg-accent animate-ping" />
-                        <span>SYSTEM DEPLOYED STATUS: ACTIVE</span>
-                    </div>
-                </div>
+                {/* Header Title matching standard portfolio headers */}
+                <h2 className="skills-heading text-2xl sm:text-3xl font-bold mb-10 sm:mb-16 flex items-center text-white">
+                    <span className="text-white/40 mr-4 font-mono text-sm">02.</span> Tech Stack
+                </h2>
 
                 {/* Main 3-column Categories Grid */}
                 <div className="skills-categories-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
