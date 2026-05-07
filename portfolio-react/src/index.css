@@ -133,4 +133,147 @@ main, #bg-canvas {
   transition: filter 0.5s ease;
 }
 
+/* --- Premium Cyber Tech Stack Utilities --- */
+
+/* Ambient Cyber Grid Background */
+.cyber-grid-bg {
+  background-image: 
+    radial-gradient(rgba(139, 92, 246, 0.15) 1px, transparent 1px),
+    radial-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px, 20px 20px;
+  background-position: 0 0, 10px 10px;
+}
+
+/* Slow Floating Animations */
+@keyframes cyberFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1deg);
+  }
+}
+
+@keyframes cyberFloatReverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(8px) rotate(-1deg);
+  }
+}
+
+.animate-cyber-float-slow {
+  animation: cyberFloat 8s ease-in-out infinite;
+}
+
+.animate-cyber-float-medium {
+  animation: cyberFloatReverse 6s ease-in-out infinite;
+}
+
+.animate-cyber-float-fast {
+  animation: cyberFloat 4s ease-in-out infinite;
+}
+
+/* Pulsing Atmospheric Glow Orbs */
+@keyframes orbPulse {
+  0%, 100% {
+    opacity: 0.12;
+    transform: scale(1) translate(0px, 0px);
+  }
+  50% {
+    opacity: 0.22;
+    transform: scale(1.2) translate(15px, -15px);
+  }
+}
+
+.animate-orb-pulse-1 {
+  animation: orbPulse 12s ease-in-out infinite;
+}
+
+.animate-orb-pulse-2 {
+  animation: orbPulse 16s ease-in-out infinite alternate;
+}
+
+/* Glassmorphism Cards */
+.cyber-glass-card {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px) saturate(130%);
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.cyber-glass-card:hover {
+  background: rgba(255, 255, 255, 0.035);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+/* Animated Neon Borders */
+@keyframes runningBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.cyber-gradient-border {
+  position: relative;
+  background: rgba(15, 15, 15, 0.6);
+}
+
+.cyber-gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px; /* Border thickness */
+  background: linear-gradient(
+    90deg,
+    rgba(139, 92, 246, 0.1),
+    rgba(167, 139, 250, 0.2),
+    rgba(139, 92, 246, 0.5),
+    rgba(192, 132, 252, 0.2),
+    rgba(139, 92, 246, 0.1)
+  );
+  background-size: 300% 300%;
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+  transition: all 0.5s ease;
+}
+
+.cyber-gradient-border:hover::before {
+  background: linear-gradient(
+    90deg,
+    #8b5cf6,
+    #ec4899,
+    #3b82f6,
+    #8b5cf6
+  );
+  background-size: 300% 300%;
+  animation: runningBorder 4s linear infinite;
+}
+
+/* Custom 3D Parallax Perspective */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+
 

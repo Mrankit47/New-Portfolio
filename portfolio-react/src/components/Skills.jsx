@@ -1,49 +1,232 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// ==========================================
+// Reusable sub-component: TechCard
+// ==========================================
+const TechCard = ({ name, iconClass, svg, color, index }) => {
+    const cardRef = useRef(null);
+    const [tilt, setTilt] = useState({ x: 0, y: 0 });
+    const [isHovered, setIsHovered] = useState(false);
+
+    const handleMouseMove = (e) => {
+        if (!cardRef.current) return;
+        const card = cardRef.current;
+        const rect = card.getBoundingClientRect();
+        
+        // Mouse coordinate relative to the card center
+        const cardWidth = rect.width;
+        const cardHeight = rect.height;
+        const mouseX = e.clientX - rect.left - cardWidth / 2;
+        const mouseY = e.clientY - rect.top - cardHeight / 2;
+
+        // Calculate rotation angles (max 15 degrees)
+        const rotateX = -(mouseY / (cardHeight / 2)) * 15;
+        const rotateY = (mouseX / (cardWidth / 2)) * 15;
+
+        setTilt({ x: rotateY, y: rotateX });
+    };
+
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+        setTilt({ x: 0, y: 0 });
+    };
+
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+    };
+
+    // Style mapping for dynamic glow matching the technology color
+    const glowStyle = isHovered 
+        ? {
+            boxShadow: `0 15px 35px -5px rgba(0, 0, 0, 0.6), 0 0 25px 2px ${color}44`,
+            borderColor: `${color}66`,
+            transform: `perspective(1000px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg) scale3d(1.05, 1.05, 1.05)`,
+            background: 'rgba(255, 255, 255, 0.04)',
+          }
+        : {};
+
+    const iconStyle = isHovered
+        ? {
+            filter: `drop-shadow(0 0 10px ${color}cc)`,
+            transform: `translateZ(25px) scale(1.1) rotate(${tilt.x * 0.15}deg)`,
+          }
+        : {
+            filter: 'grayscale(0.3) brightness(0.85)',
+          };
+
+    // Get float animation class based on index to randomize floating
+    const floatClass = index % 3 === 0 
+        ? 'animate-cyber-float-slow' 
+        : index % 3 === 1 
+            ? 'animate-cyber-float-medium' 
+            : 'animate-cyber-float-fast';
+
+    return (
+        <div
+            ref={cardRef}
+            className={`tech-card relative p-3 flex flex-col items-center justify-center rounded-2xl cursor-pointer select-none border border-white/[0.04] bg-white/[0.01] backdrop-blur-md transition-all duration-300 ease-out preserve-3d group ${floatClass}`}
+            style={glowStyle}
+            onMouseMove={handleMouseMove}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
+            {/* Holographic scanner effect line inside card on hover */}
+            <div className="absolute inset-0 w-full h-[2px] bg-gradient-to-r from-transparent via-white/20 to-transparent top-0 group-hover:top-[100%] transition-all duration-1000 ease-in-out opacity-0 group-hover:opacity-100 pointer-events-none" />
+
+            {/* Dynamic Colored Brand Ambient Backdrop Light */}
+            <div 
+                className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none"
+                style={{
+                    background: `radial-gradient(circle at center, ${color} 0%, transparent 70%)`
+                }}
+            />
+
+            {/* Icon Wrapper (Sized smaller and sleeker as requested) */}
+            <div 
+                className="w-10 h-10 flex items-center justify-center mb-2 transition-all duration-300 preserve-3d"
+                style={iconStyle}
+            >
+                {svg ? (
+                    <div style={{ color }} className="w-7 h-7 flex items-center justify-center">
+                        {svg}
+                    </div>
+                ) : (
+                    <i className={`${iconClass} text-2xl sm:text-3xl`} />
+                )}
+            </div>
+
+            {/* Tech Name Label */}
+            <span className="text-[10px] sm:text-xs font-mono font-medium text-white/50 group-hover:text-white transition-colors duration-300 transform preserve-3d group-hover:translateZ(12px) text-center">
+                {name}
+            </span>
+        </div>
+    );
+};
+
+// ==========================================
+// Reusable sub-component: TechCategory
+// ==========================================
+const TechCategory = ({ category, items, catIdx }) => {
+    return (
+        <div className="tech-category-wrapper relative rounded-2xl overflow-hidden p-[1px] transition-all duration-500 hover:scale-[1.01]">
+            {/* The Animated Conic Gradient Neon Border card */}
+            <div className="cyber-gradient-border rounded-2xl h-full w-full">
+                <div className="bg-[#0c0c0d]/90 backdrop-blur-2xl rounded-2xl p-4 sm:p-5 h-full flex flex-col justify-between relative overflow-hidden">
+                    
+                    {/* Decorative subtle technological grids inside card */}
+                    <div className="absolute inset-0 cyber-grid-bg opacity-[0.03] pointer-events-none" />
+
+                    {/* Category Title Header */}
+                    <div className="flex items-center justify-between mb-4 relative z-10 border-b border-white/[0.04] pb-3">
+                        <div className="flex items-center space-x-3">
+                            <span className="font-mono text-accent text-sm sm:text-base font-semibold">
+                                &lt;0{catIdx + 1}&gt;
+                            </span>
+                            <h3 className="text-base sm:text-lg font-bold uppercase tracking-wider text-white">
+                                {category}
+                            </h3>
+                        </div>
+                        {/* Status blinking dot for cyber UI look */}
+                        <div className="flex items-center space-x-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                            <span className="text-[10px] font-mono text-white/30 uppercase tracking-widest hidden sm:inline">
+                                ONLINE
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Responsive Tech Cards Grid */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 relative z-10">
+                        {items.map((skill, sIdx) => (
+                            <TechCard 
+                                key={sIdx}
+                                name={skill.name}
+                                iconClass={skill.iconClass}
+                                svg={skill.svg}
+                                color={skill.color}
+                                index={sIdx}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// ==========================================
+// Main Component: Skills (Tech Stack Section)
+// ==========================================
 const Skills = () => {
     const skillsData = [
         {
             category: "Languages",
             items: [
-                { name: "C", color: "#A8B9CC", svg: <svg viewBox="0 0 128 128"><path fill="currentColor" d="M117.5 33.5L64 2.7L10.5 33.5v61l53.5 30.8l53.5-30.8v-61zM64 107.7c-24.1 0-43.7-19.6-43.7-43.7s19.6-43.7 43.7-43.7c12 0 23 4.9 30.9 12.8L77.1 51c-3.4-3.4-8.1-5.5-13.1-5.5c-10.2 0-18.5 8.3-18.5 18.5s8.3 18.5 18.5 18.5c5 0 9.7-2.1 13.1-5.5l17.8 17.8c-7.9 8-18.9 12.9-30.9 12.9z"/></svg> },
-                { name: "C++", color: "#00599C", svg: <svg viewBox="0 0 128 128"><path fill="currentColor" d="M117.5 33.5L64 2.7L10.5 33.5v61l53.5 30.8l53.5-30.8v-61zM64 107.7c-24.1 0-43.7-19.6-43.7-43.7s19.6-43.7 43.7-43.7c12 0 23 4.9 30.9 12.8L77.1 51c-3.4-3.4-8.1-5.5-13.1-5.5c-10.2 0-18.5 8.3-18.5 18.5s8.3 18.5 18.5 18.5c5 0 9.7-2.1 13.1-5.5l17.8 17.8c-7.9 8-18.9 12.9-30.9 12.9z"/><path fill="currentColor" d="M100.5 54.4h11.1v7h-11.1v11.1h-7v-11.1h-11.1v-7h11.1v-11.1h7v11.1zm-32.4 0h11.1v7h-11.1v11.1h-7v-11.1h-11.1v-7h11.1v-11.1h7v11.1z"/></svg> },
-                { name: "Python", color: "#3776AB", svg: <svg viewBox="0 0 128 128"><path fill="#3776AB" d="M64 4c-32.6 0-31 14.1-31 14.1l.1 14.5h31.5v4.4H20.1S4.4 35 4.4 67.3c0 32.3 13.8 31.3 13.8 31.3h8.3V86.9c0-16.7 14.1-16.1 14.1-16.1h23.1s13.8-.4 13.8-13.8V35.4S78.8 4 64 4zm-14.8 8.1c2.4 0 4.4 2 4.4 4.4c0 2.4-2 4.4-4.4 4.4s-4.4-2-4.4-4.4c0-2.4 2-4.4 4.4-4.4z"/><path fill="#FFD343" d="M64 124c32.6 0 31-14.1 31-14.1l-.1-14.5H63.4v-4.4h44.5s15.7 2.1 15.7-30.2c0-32.3-13.8-31.3-13.8-31.3h-8.3v11.7c0 16.7-14.1 16.1-14.1 16.1H64.3s-13.8.4-13.8 13.8v21.7s-1.2 31.4 13.5 31.4zm14.8-8.1c-2.4 0-4.4-2-4.4-4.4c0-2.4 2-4.4 4.4-4.4s4.4 2 4.4 4.4c0 2.4-2 4.4-4.4 4.4z"/></svg> },
+                { name: "Python", iconClass: "devicon-python-plain colored", color: "#3776AB" },
+                { name: "C", iconClass: "devicon-c-plain colored", color: "#A8B9CC" },
+                { name: "C++", iconClass: "devicon-cplusplus-plain colored", color: "#00599C" },
             ]
         },
         {
-            category: "Web Tech",
+            category: "Frontend",
             items: [
-                { name: "HTML5/CSS3", color: "#E34F26", svg: <div className="flex space-x-1"><svg className="w-6 h-6" viewBox="0 0 128 128"><path fill="#E34F26" d="M19.1 13h89.8l-8.2 91.5L64 115l-36.7-10.5L19.1 13z"/><path fill="#EF652A" d="M64 105.7l28.6-8.2L98.6 30H64v75.7z"/><path fill="#EBEBEB" d="M64 54.4H44.6l-1.3-15.1h39.4l1.3-14.9H28.7l4.1 44.9H64v-14.9zm0 31.2l-0.1 0.1l-12.8-3.4l-0.8-9.2H35.4l1.6 17.8l26.9 7.4l0.1-12.7z"/><path fill="#FFF" d="M64 69.3h14.1l-1.3 14.9l-12.8 3.5v12.7l26.9-7.4l3.3-37.1H64v13.4zm0-39.3v14.9h20.6l1.3-14.9H64z"/></svg><svg className="w-6 h-6" viewBox="0 0 128 128"><path fill="#1572B6" d="M19.1 13h89.8l-8.2 91.5L64 115l-36.7-10.5L19.1 13z"/><path fill="#33A9DC" d="M64 105.7l28.6-8.2L98.6 30H64v75.7z"/><path fill="#EBEBEB" d="M64 54.4H44.6l-1.3-15.1h39.4l1.3-14.9H28.7l4.1 44.9H64v-14.9zm0 31.2l-0.1 0.1l-12.8-3.4l-0.8-9.2H35.4l1.6 17.8l26.9 7.4l0.1-12.7z"/><path fill="#FFF" d="M64 69.3h14.1l-1.3 14.9l-12.8 3.5v12.7l26.9-7.4l3.3-37.1H64v13.4zm0-39.3v14.9h20.6l1.3-14.9H64z"/></svg></div> },
-                { name: "React", color: "#61DAFB", svg: <svg viewBox="0 0 128 128"><circle cx="64" cy="64" r="10.1" fill="currentColor"/><path fill="currentColor" d="M117.5 53.6c-1.3-7.4-4.8-13.8-9.8-18.4c-5.7-5.2-12.6-8.5-20-9.6c-4.4-.7-8.8-.7-13.2 0c-13.5 2.1-25.5 8.9-34.8 18.8c-1.6 1.7-3.1 3.5-4.5 5.4c-1.2-1.8-2.6-3.6-4-5.2c-10-11.4-23.7-18.9-38.9-20c-4.4-.3-8.8-.1-13.1.6c-7.4 1.2-14.3 4.5-20 9.7c-5 4.6-8.5 11-9.8 18.4c-1.3 7.4-.5 14.9 2.2 21.7c2.6 6.5 6.8 12.3 12.3 16.7c5.5 4.4 12 7.4 19 8.7c4.1.8 8.3 1 12.5.7c15.1-1.1 28.8-8.6 38.9-20c1.4-1.6 2.8-3.3 4-5.2c1.4 1.9 2.9 3.7 4.5 5.4c9.3 9.9 21.3 16.7 34.8 18.8c4.4.7 8.8.7 13.2 0c7.4-1.1 14.3-4.4 20-9.6c5-4.6 8.5-11 9.8-18.4c1.3-7.4.5-14.9-2.2-21.7c-2.6-6.5-6.8-12.2-12.3-16.6zm-53.5 10.4c0-4.1 3.3-7.4 7.4-7.4c4.1 0 7.4 3.3 7.4 7.4s-3.3 7.4-7.4 7.4s-7.4-3.3-7.4-7.4zm42.7 18c-3.1 4.3-7.3 7.9-12.2 10.3c-4.7 2.3-9.8 3.5-15 3.5c-3 0-6-.4-9-1.2c-11.2-2.9-20.7-10.4-26.6-20.7c5.9-10.3 15.4-17.8 26.6-20.7c3-.8 6-1.2 9-1.2c5.2 0 10.3 1.2 15 3.5c4.9 2.4 9.1 5.9 12.2 10.3c2.4 3.5 3.7 7.6 3.7 11.8c0 4.1-1.3 8.2-3.7 12.7zm-65.4-30.7c3.1-4.3 7.3-7.9 12.2-10.3c4.7-2.3 9.8-3.5 15-3.5c3 0 6 .4 9 1.2c1.5.4 3 .9 4.4 1.5c-3.9 3.1-7.4 6.9-10.3 11.2c-5.9 8.7-9.3 18.7-9.3 29.5c0 10.8 3.4 20.8 9.3 29.5c2.9 4.3 6.4 8.1 10.3 11.2c-1.4.6-2.9 1.1-4.4 1.5c-3 .8-6 1.2-9 1.2c-5.2 0-10.3-1.2-15-3.5c-4.9-2.4-9.1-5.9-12.2-10.3c-2.4-3.5-3.7-7.6-3.7-11.8c0-4.1 1.3-8.2 3.7-12.7z"/></svg> },
-                { name: "Next.js", color: "#FFFFFF", svg: <svg viewBox="0 0 128 128"><path fill="currentColor" d="M64 0C28.7 0 0 28.7 0 64s28.7 64 64 64s64-28.7 64-64S99.3 0 64 0zm33.5 94.6L64 52.4L30.5 94.6H17.4L64 36.1l46.6 58.5H97.5z"/></svg> },
+                { name: "HTML5", iconClass: "devicon-html5-plain colored", color: "#E34F26" },
+                { name: "CSS3", iconClass: "devicon-css3-plain colored", color: "#1572B6" },
+                { name: "React", iconClass: "devicon-react-original colored", color: "#61DAFB" },
+            ]
+        },
+        {
+            category: "Backend",
+            items: [
+                { name: "Django", iconClass: "devicon-django-plain colored", color: "#092E20" },
+                { name: "FastAPI", iconClass: "devicon-fastapi-plain colored", color: "#009688" },
             ]
         },
         {
             category: "Databases",
             items: [
-                { name: "PostgreSQL", color: "#336791", svg: <svg viewBox="0 0 128 128"><path fill="currentColor" d="M106.8 57.6c1.1-6.1 1.4-12.2 1.4-18.4C108.2 18.2 88.4 2 64.1 2S20 18.2 20 39.2c0 6.2.3 12.3 1.4 18.4C11.5 63.8 5 73.1 5 83.6c0 14.6 12.8 26.6 28.6 26.6c6.1 0 11.8-1.7 16.5-4.8c4.2 4.1 9.8 6.6 16.1 6.6c6.3 0 11.9-2.5 16.1-6.6c4.7 3.1 10.4 4.8 16.5 4.8c15.8 0 28.6-12 28.6-26.6c0-10.5-6.5-19.8-16.4-26zM28.6 39.2c0-11.9 15.9-21.5 35.5-21.5s35.5 9.6 35.5 21.5s-15.9 21.5-35.5 21.5s-35.5-9.6-35.5-21.5zm5.5 44.4c0-7.3 8.3-13.3 18.6-13.3c3.7 0 7.2.8 10.2 2.1c-1.8 3.5-2.8 7.4-2.8 11.5c0 4.1 1 8 2.8 11.5c-3 1.3-6.5 2.1-10.2 2.1c-10.3 0-18.6-6-18.6-13.9zm30 14.1c-6.8 0-12.3-5.5-12.3-12.3s5.5-12.3 12.3-12.3s12.3 5.5 12.3 12.3s-5.5 12.3-12.3 12.3zm30.3-0.8c-3 1.3-6.5 2.1-10.2 2.1c-3.7 0-7.2-.8-10.2-2.1c1.8-3.5 2.8-7.4 2.8-11.5c0-4.1-1-8-2.8-11.5c3-1.3 6.5-2.1 10.2-2.1c10.3 0 18.6 6 18.6 13.3c0 7.3-8.3 13.3-18.6 13.9z"/></svg> },
-                { name: "MySQL", color: "#00758F", svg: <svg viewBox="0 0 128 128"><path fill="currentColor" d="M63.5 1.5C29.2 1.5 1.5 29.2 1.5 63.5S29.2 125.5 63.5 125.5s62-27.7 62-62s-27.7-62-62-62zm19.3 90.6c-2.3 1.4-5 2.4-8 3.1c-3.1.7-6.5 1-10.1 1c-5.9 0-11.1-1-15.5-3s-7.8-4.8-10.3-8.4c-2.5-3.6-3.7-7.8-3.7-12.7c0-4.9 1.2-9.2 3.7-12.8s5.9-6.4 10.3-8.4c4.4-2 9.6-3 15.5-3c3.6 0 7 1 10.1 1s5.7 1.7 8 3.1l-5.6 11.2c-1.4-.9-3.1-1.6-4.9-2.2s-3.8-.8-5.7-.8c-3.4 0-6.2.7-8.4 2.1s-3.9 3.4-5 5.9c-1.1 2.5-1.7 5.5-1.7 8.9s.6 6.4 1.7 8.9c1.1 2.5 2.8 4.5 5 5.9c2.2 1.4 5 2.1 8.4 2.1c1.9 0 3.8-.3 5.7-.8s3.5-1.3 4.9-2.2l5.6 11.2z"/></svg> },
-                { name: "Sanity", color: "#F03E2F", svg: <svg viewBox="0 0 128 128"><path fill="currentColor" d="M12 0L3 5.25v13.5L12 24l9-5.25V5.25L12 0zm7.125 17.625L12 21.75l-7.125-4.125V6.375L12 2.25l7.125 4.125v11.25zM12 6L6.75 9v6L12 18l5.25-3V9L12 6z"/></svg> },
+                { name: "PostgreSQL", iconClass: "devicon-postgresql-plain colored", color: "#4169E1" },
+                { name: "SQLite", iconClass: "devicon-sqlite-plain colored", color: "#003B57" },
+                { name: "Supabase", iconClass: "devicon-supabase-plain colored", color: "#3ECF8E" },
             ]
         },
         {
             category: "Tools",
             items: [
-                { name: "GitHub", color: "#FFFFFF", svg: <svg viewBox="0 0 128 128"><path fill="currentColor" d="M64 5.1C31.5 5.1 5.1 31.5 5.1 64c0 26 16.8 48 40.2 55.8c3 0.5 4-1.3 4-2.8c0-1.4-0.1-5.1-0.1-9.9c-16.4 3.6-19.9-7.9-19.9-7.9c-2.7-6.8-6.6-8.6-6.6-8.6c-5.3-3.7 0.4-3.6 0.4-3.6c5.9 0.4 9 6.1 9 6.1c5.3 9 13.8 6.4 17.2 4.9c0.5-3.8 2.1-6.4 3.7-7.9c-13.1-1.5-26.9-6.5-26.9-29.2c0-6.5 2.3-11.7 6.1-15.8c-0.6-1.5-2.6-7.5 0.6-15.6c0 0 5-1.6 16.4 6.1c4.8-1.3 9.8-2 14.9-2c5.1 0 10.1 0.7 14.9 2c11.4-7.7 16.4-6.1 16.4-6.1c3.2 8.1 1.2 14.1 0.6 15.6c3.8 4.1 6.1 9.3 6.1 15.8c0 22.8-13.8 27.7-27 29.2c2.1 1.8 4 5.5 4 11c0 8-0.1 14.4-0.1 16.4c0 1.5 1 3.3 4 2.7c23.3-7.9 40.1-29.8 40.1-55.8c0-32.5-26.5-58.9-59-58.9z"/></svg> },
-                { name: "VS Code", color: "#007ACC", svg: <svg viewBox="0 0 128 128"><path fill="currentColor" d="M114.3 22.8l-23.7-9L66.7 30l23.9 16.2l23.7-23.4zM13.7 22.8l23.7-9L61.3 30L37.4 46.2l-23.7-23.4zM64 128c35.3 0 64-28.7 64-64S99.3 0 64 0S0 28.7 0 64s28.7 64 64 64zm0-98.3l37.4 25.1L64 79.9l-37.4-25.1L64 29.7z"/></svg> },
-                { name: "UI/UX", color: "#FFB000", svg: <svg viewBox="0 0 128 128"><path fill="currentColor" d="M64 128c35.3 0 64-28.7 64-64S99.3 0 64 0S0 28.7 0 64s28.7 64 64 64zM64 22c5.5 0 10 4.5 10 10s-4.5 10-10 10s-10-4.5-10-10s4.5-10 10-10zm-10 32h20v54H54V54z"/></svg> },
+                { name: "GitHub", iconClass: "devicon-github-original text-white", color: "#A8B9CC" },
+                { name: "VS Code", iconClass: "devicon-vscode-plain colored", color: "#007ACC" },
+                { 
+                    name: "Antigravity", 
+                    color: "#A78BFA", 
+                    svg: (
+                        <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.5">
+                            <circle cx="12" cy="12" r="9" strokeDasharray="3 3" className="animate-spin" style={{ animationDuration: '15s' }} />
+                            <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+                            <path d="M12 8l3 4h-6z" fill="currentColor" />
+                            <line x1="12" y1="12" x2="12" y2="16" strokeWidth="2" strokeLinecap="round" />
+                        </svg>
+                    )
+                },
             ]
         },
         {
             category: "Deployment",
             items: [
-                { name: "Vercel", color: "#FFFFFF", svg: <svg viewBox="0 0 24 24"><path fill="currentColor" d="m12 1.608 12 20.784H0Z"/></svg> },
-                { name: "Render", color: "#46E3B7", svg: <svg viewBox="0 0 24 24"><path fill="currentColor" d="M18.263.007c-3.121-.147-5.744 2.109-6.192 5.082-.018.138-.045.272-.067.405-.696 3.703-3.936 6.507-7.827 6.507-1.388 0-2.691-.356-3.825-.979a.2024.2024 0 0 0-.302.178V24H12v-8.999c0-1.656 1.338-3 2.987-3h2.988c3.382 0 6.103-2.817 5.97-6.244-.12-3.084-2.61-5.603-5.682-5.75"/></svg> },
-                { name: "Railway", color: "#FFFFFF", svg: <svg viewBox="0 0 24 24"><path fill="currentColor" d="M.113 10.27A13.026 13.026 0 000 11.48h18.23c-.064-.125-.15-.237-.235-.347-3.117-4.027-4.793-3.677-7.19-3.78-.8-.034-1.34-.048-4.524-.048-1.704 0-3.555.005-5.358.01-.234.63-.459 1.24-.567 1.737h9.342v1.216H.113v.002zm18.26 2.426H.009c.02.326.05.645.094.961h16.955c.754 0 1.179-.429 1.315-.96zm-17.318 4.28s2.81 6.902 10.93 7.024c4.855 0 9.027-2.883 10.92-7.024H1.056zM11.988 0C7.5 0 3.593 2.466 1.531 6.108l4.75-.005v-.002c3.71 0 3.849.016 4.573.047l.448.016c1.563.052 3.485.22 4.996 1.364.82.621 2.007 1.99 2.712 2.965.654.902.842 1.94.396 2.934-.408.914-1.289 1.458-2.353 1.458H.391s.099.42.249.886h22.748A12.026 12.026 0 0024 12.005C24 5.377 18.621 0 11.988 0z"/></svg> },
+                { name: "Vercel", iconClass: "devicon-vercel-original text-white", color: "#E5E5E5" },
+                { 
+                    name: "Render", 
+                    color: "#46E3B7", 
+                    svg: <svg viewBox="0 0 24 24" className="w-7 h-7" fill="currentColor"><path d="M18.263.007c-3.121-.147-5.744 2.109-6.192 5.082-.018.138-.045.272-.067.405-.696 3.703-3.936 6.507-7.827 6.507-1.388 0-2.691-.356-3.825-.979a.2024.2024 0 0 0-.302.178V24H12v-8.999c0-1.656 1.338-3 2.987-3h2.988c3.382 0 6.103-2.817 5.97-6.244-.12-3.084-2.61-5.603-5.682-5.75"/></svg> 
+                },
+                { 
+                    name: "Railway", 
+                    color: "#F1F1F1", 
+                    svg: <svg viewBox="0 0 24 24" className="w-7 h-7" fill="currentColor"><path d="M.113 10.27A13.026 13.026 0 000 11.48h18.23c-.064-.125-.15-.237-.235-.347-3.117-4.027-4.793-3.677-7.19-3.78-.8-.034-1.34-.048-4.524-.048-1.704 0-3.555.005-5.358.01-.234.63-.459 1.24-.567 1.737h9.342v1.216H.113v.002zm18.26 2.426H.009c.02.326.05.645.094.961h16.955c.754 0 1.179-.429 1.315-.96zm-17.318 4.28s2.81 6.902 10.93 7.024c4.855 0 9.027-2.883 10.92-7.024H1.056zM11.988 0C7.5 0 3.593 2.466 1.531 6.108l4.75-.005v-.002c3.71 0 3.849.016 4.573.047l.448.016c1.563.052 3.485.22 4.996 1.364.82.621 2.007 1.99 2.712 2.965.654.902.842 1.94.396 2.934-.408.914-1.289 1.458-2.353 1.458H.391s.099.42.249.886h22.748A12.026 12.026 0 0024 12.005C24 5.377 18.621 0 11.988 0z"/></svg> 
+                },
             ]
         }
     ];
@@ -52,71 +235,95 @@ const Skills = () => {
 
     useEffect(() => {
         const ctx = gsap.context(() => {
-            // Heading fade in
-            gsap.from(".skills-heading", {
-                y: 30,
-                opacity: 0,
-                duration: 1,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: ".skills-heading",
-                    start: "top 85%",
+            // Title reveal
+            gsap.fromTo(".skills-heading", 
+                {
+                    y: 30,
+                    opacity: 0,
+                },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: ".skills-heading",
+                        start: "top 85%",
+                    }
                 }
-            });
+            );
 
-            // All skill columns fade in together
-            gsap.from(".skill-column", {
-                y: 40,
-                opacity: 0,
-                duration: 1,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: ".skills-grid",
-                    start: "top 80%",
+            // Staggered categories reveal
+            gsap.fromTo(".tech-category-wrapper", 
+                {
+                    y: 60,
+                    opacity: 0,
+                    scale: 0.95,
+                },
+                {
+                    y: 0,
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.8,
+                    stagger: 0.12,
+                    ease: "power4.out",
+                    scrollTrigger: {
+                        trigger: ".skills-categories-grid",
+                        start: "top 80%",
+                        toggleActions: "play none none none"
+                    }
                 }
-            });
+            );
         }, sectionRef);
 
         return () => ctx.revert();
     }, []);
 
     return (
-        <section id="skills" ref={sectionRef} className="py-16 sm:py-32 px-4 sm:px-6 md:px-24 bg-dark-alt/50 border-y border-white/5">
-            <div className="max-w-7xl mx-auto">
-                <h2 className="skills-heading text-2xl sm:text-3xl font-bold mb-10 sm:mb-16 flex items-center">
-                    <span className="text-accent mr-4 font-mono text-sm">02.</span> Tech Stack
-                </h2>
+        <section 
+            id="skills" 
+            ref={sectionRef} 
+            className="py-20 sm:py-32 px-4 sm:px-6 md:px-12 lg:px-24 bg-dark-alt/20 border-y border-white/5 relative overflow-hidden"
+        >
+            {/* Ambient Background Glow Mesh and Orbs */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+                {/* Subtle Cyber Grid overlay */}
+                <div className="absolute inset-0 cyber-grid-bg opacity-[0.06]" />
 
-                <div className="skills-grid grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-8 sm:gap-12">
-                    {skillsData.map((category, idx) => (
-                        <div key={idx} className="skill-column">
-                            <h3 className="text-xs font-mono text-white/40 mb-6 uppercase tracking-widest">
-                                {category.category}
-                            </h3>
-                            <ul className="space-y-4">
-                                {category.items.map((skill, sIdx) => (
-                                    <li key={sIdx} className="flex items-center space-x-4 group">
-                                        <div 
-                                            className="w-8 h-8 flex items-center justify-center transition-all duration-500 group-hover:scale-125" 
-                                            style={{ color: 'rgba(255,255,255,0.4)', filter: 'grayscale(1) brightness(0.6)' }}
-                                            onMouseEnter={(e) => {
-                                                e.currentTarget.style.color = '#8b5cf6';
-                                                e.currentTarget.style.filter = 'grayscale(0) brightness(1.2) drop-shadow(0 0 12px rgba(139,92,246,0.9)) drop-shadow(0 0 24px rgba(139,92,246,0.4))';
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                e.currentTarget.style.color = 'rgba(255,255,255,0.4)';
-                                                e.currentTarget.style.filter = 'grayscale(1) brightness(0.6)';
-                                            }}
-                                        >
-                                            {skill.svg}
-                                        </div>
-                                        <span className="font-bold text-lg text-white/50 group-hover:text-white transition-colors duration-300">
-                                            {skill.name}
-                                        </span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                {/* Glowing purple and cyan futuristic mesh/orbs */}
+                <div className="absolute top-[10%] left-[5%] w-[350px] h-[350px] rounded-full bg-accent/8 filter blur-[100px] animate-orb-pulse-1" />
+                <div className="absolute bottom-[10%] right-[5%] w-[400px] h-[400px] rounded-full bg-pink-500/5 filter blur-[120px] animate-orb-pulse-2" />
+                <div className="absolute top-[40%] left-[45%] -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] rounded-full bg-blue-500/5 filter blur-[130px] animate-orb-pulse-1" />
+            </div>
+
+            <div className="max-w-7xl mx-auto relative z-10">
+                {/* Header Title with futuristic monospaced indicators */}
+                <div className="skills-heading flex flex-col sm:flex-row sm:items-center justify-between mb-16 sm:mb-24">
+                    <div>
+                        <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white flex items-center">
+                            <span className="text-accent mr-3 sm:mr-4 font-mono text-base sm:text-lg font-semibold">&lt;02.&gt;</span> 
+                            TECH STACK
+                        </h2>
+                        <p className="mt-3 text-sm sm:text-base text-white/40 font-mono tracking-wide">
+                            // CRAFTING DIGITAL ARCHITECTURE WITH CUTTING-EDGE SOLUTIONS
+                        </p>
+                    </div>
+                    {/* Retro Cyber-HUD detail indicator */}
+                    <div className="hidden lg:flex items-center space-x-4 font-mono text-xs text-white/30 border border-white/10 rounded-full px-5 py-2 backdrop-blur-md">
+                        <span className="w-2 h-2 rounded-full bg-accent animate-ping" />
+                        <span>SYSTEM DEPLOYED STATUS: ACTIVE</span>
+                    </div>
+                </div>
+
+                {/* Main 3-column Categories Grid */}
+                <div className="skills-categories-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                    {skillsData.map((cat, idx) => (
+                        <TechCategory 
+                            key={idx}
+                            category={cat.category}
+                            items={cat.items}
+                            catIdx={idx}
+                        />
                     ))}
                 </div>
             </div>
