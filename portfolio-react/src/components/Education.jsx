@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -6,6 +6,40 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Education = () => {
     const sectionRef = useRef(null);
+    const [selectedCert, setSelectedCert] = useState(null);
+
+    const certifications = [
+        {
+            title: "Internship Certificate – Eagle In Cloud (4 months)",
+            url: "/assets/docs/ankit eagle in cloud.png",
+            isImage: true
+        },
+        {
+            title: "Web Development Workshop – Google Developer Group (3 days)",
+            url: "/assets/docs/Ankit Kushwah GDG Certificats.png",
+            isImage: true
+        },
+        {
+            title: "React JS Workshop – Sanamtrana 2025, Cloud State University (USA)",
+            url: "/assets/docs/Certificate Sanmantrana-25 (1).png",
+            isImage: true
+        },
+        {
+            title: "Soft Skills Certification – IIT Roorkee (NPTEL, 58%)",
+            url: "/assets/docs/Soft Skills NPTL.png",
+            isImage: true
+        },
+        {
+            title: "Public Speaking Certification – IIT Roorkee (NPTEL, 62%)",
+            url: "/assets/docs/Public Speaking NPTL.png",
+            isImage: true
+        },
+        {
+            title: "C/C++ & Data Structures Internship – Universal Information",
+            url: "/assets/docs/Internship certificate.jpg",
+            isImage: true
+        }
+    ];
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -40,7 +74,8 @@ const Education = () => {
     }, []);
 
     return (
-        <section id="education" ref={sectionRef} className="py-16 sm:py-32 px-4 sm:px-6 md:px-24 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-24">
+        <>
+            <section id="education" ref={sectionRef} className="py-16 sm:py-32 px-4 sm:px-6 md:px-24 max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-24">
             <div className="reveal-on-scroll">
                 <h2 className="text-2xl sm:text-3xl font-bold mb-10 sm:mb-16 flex items-center">
                     <span className="text-accent mr-4 font-mono text-sm">05.</span>
@@ -92,33 +127,51 @@ const Education = () => {
                     Certifications
                 </h2>
                 <ul className="space-y-4 sm:space-y-6 font-mono text-xs sm:text-sm text-white/60">
-                    <li className="flex items-start group">
-                        <span className="text-accent mr-4 group-hover:translate-x-1 transition-transform">→</span>
-                        <a href="https://drive.google.com/file/d/1GGEvuDIY8fd-rqZXQOhRtk8YXFhrjGjn/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">Internship Certificate – Eagle In Cloud (4 months)</a>
-                    </li>
-                    <li className="flex items-start group">
-                        <span className="text-accent mr-4 group-hover:translate-x-1 transition-transform">→</span>
-                        <a href="https://drive.google.com/file/d/12zWP-StA86s90WDpMb0WdqKA3jYwO5R7/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">Web Development Workshop – Google Developer Group (3 days)</a>
-                    </li>
-                    <li className="flex items-start group">
-                        <span className="text-accent mr-4 group-hover:translate-x-1 transition-transform">→</span>
-                        <a href="https://drive.google.com/file/d/1-lm2gbkeb6KePMx9-Cbz_YmznNYWtcvi/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">React JS Workshop – Sanamtrana 2025, Cloud State University (USA)</a>
-                    </li>
-                    <li className="flex items-start group">
-                        <span className="text-accent mr-4 group-hover:translate-x-1 transition-transform">→</span>
-                        <a href="https://drive.google.com/file/d/10ybC-mKeStYVZMFlFlM9cZgbXPgeOchL/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">Soft Skills Certification – IIT Roorkee (NPTEL, 58%)</a>
-                    </li>
-                    <li className="flex items-start group">
-                        <span className="text-accent mr-4 group-hover:translate-x-1 transition-transform">→</span>
-                        <a href="https://drive.google.com/file/d/1j1ATiTbrrELCcGca-KhYF7qaCFDGnqJ-/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">Public Speaking Certification – IIT Roorkee (NPTEL, 62%)</a>
-                    </li>
-                    <li className="flex items-start group">
-                        <span className="text-accent mr-4 group-hover:translate-x-1 transition-transform">→</span>
-                        <a href="https://drive.google.com/file/d/1hM8kFPdj7GywiBHnV4sf6c9t0volfvsu/view?usp=drive_link" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">C/C++ & Data Structures Internship – Universal Information</a>
-                    </li>
+                    {certifications.map((cert, index) => (
+                        <li key={index} className="flex items-start group">
+                            <span className="text-accent mr-4 group-hover:translate-x-1 transition-transform">→</span>
+                            <a 
+                                onClick={(e) => { e.preventDefault(); setSelectedCert(cert); }} 
+                                className="hover:text-accent transition-colors cursor-pointer"
+                            >
+                                {cert.title}
+                            </a>
+                        </li>
+                    ))}
                 </ul>
             </div>
         </section>
+
+        {/* Modal */}
+        {selectedCert && (
+            <div 
+                className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 sm:p-8"
+                onClick={() => setSelectedCert(null)}
+            >
+                <div 
+                    className="relative w-full max-w-5xl h-[80vh] bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden flex flex-col"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <div className="flex justify-between items-center p-4 border-b border-white/10 bg-[#0a0a0a] z-10">
+                        <h3 className="text-white font-bold truncate pr-4">{selectedCert.title}</h3>
+                        <button 
+                            onClick={() => setSelectedCert(null)}
+                            className="text-white/60 hover:text-accent transition-colors p-1"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    </div>
+                    <div className="flex-1 w-full bg-black/50 overflow-hidden flex items-center justify-center p-2">
+                        {selectedCert.isImage ? (
+                            <img src={selectedCert.url} alt={selectedCert.title} className="max-w-full max-h-full object-contain rounded-lg" />
+                        ) : (
+                            <iframe src={selectedCert.url} className="w-full h-full border-0 bg-white rounded-lg" title={selectedCert.title} />
+                        )}
+                    </div>
+                </div>
+            </div>
+        )}
+        </>
     );
 };
 

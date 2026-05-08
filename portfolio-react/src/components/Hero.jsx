@@ -9,6 +9,7 @@ const Hero = () => {
     const [roleIndex, setRoleIndex] = useState(0);
     const [isDeleting, setIsDeleting] = useState(false);
     const [charIndex, setCharIndex] = useState(0);
+    const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
 
     useEffect(() => {
         const tl = gsap.timeline({ defaults: { ease: 'power4.out', duration: 1.5 } });
@@ -93,17 +94,15 @@ const Hero = () => {
                     </p>
 
                     <div className="reveal-subtitle opacity-0 translate-y-10">
-                        <a 
-                            href="https://drive.google.com/file/d/13p7RrIGyp9WXYs6BByyQjLhK-55_tLre/view?usp=drive_link" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-accent/10 border border-accent/40 rounded-full text-white font-mono text-xs sm:text-sm uppercase tracking-widest hover:bg-accent hover:text-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(139,92,246,0.1)] group"
+                        <button 
+                            onClick={() => setIsResumeModalOpen(true)}
+                            className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-accent/10 border border-accent/40 rounded-full text-white font-mono text-xs sm:text-sm uppercase tracking-widest hover:bg-accent hover:text-white hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(139,92,246,0.1)] group cursor-pointer"
                         >
                             View Resume
                             <svg className="ml-3 w-4 h-4 transform group-hover:translate-y-[-2px] transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                             </svg>
-                        </a>
+                        </button>
                     </div>
                 </div>
 
@@ -151,6 +150,32 @@ const Hero = () => {
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2 scroll-indicator opacity-0 translate-y-10">
                 <div className="w-px h-12 bg-gradient-to-b from-accent to-transparent"></div>
             </div>
+
+            {/* Resume Modal */}
+            {isResumeModalOpen && (
+                <div 
+                    className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 sm:p-8"
+                    onClick={() => setIsResumeModalOpen(false)}
+                >
+                    <div 
+                        className="relative w-full max-w-5xl h-[80vh] bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden flex flex-col"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="flex justify-between items-center p-4 border-b border-white/10 bg-[#0a0a0a] z-10">
+                            <h3 className="text-white font-bold truncate pr-4">Ankit Kushwah - Resume</h3>
+                            <button 
+                                onClick={() => setIsResumeModalOpen(false)}
+                                className="text-white/60 hover:text-accent transition-colors p-1"
+                            >
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            </button>
+                        </div>
+                        <div className="flex-1 w-full bg-black/50 overflow-hidden flex items-center justify-center p-2">
+                            <iframe src="/assets/docs/Ankit_Kushwah.pdf" className="w-full h-full border-0 bg-white rounded-lg" title="Resume" />
+                        </div>
+                    </div>
+                </div>
+            )}
         </section>
     );
 };
