@@ -7,6 +7,22 @@ gsap.registerPlugin(ScrollTrigger);
 const Projects = () => {
     const projectsData = [
         {
+            title: "Galaxium",
+            category: "3D Space / WebGL",
+            description: "A high-fidelity cinematic 3D solar system observatory. Features realistic planetary custom shaders, precise orbital mechanics, atmospheric simulation, and dynamic macro-to-micro camera traversals.",
+            tech: ["React Three Fiber", "Three.js", "GSAP", "Custom Shaders"],
+            github: "https://github.com/Mrankit47/Solar-System-Observation-",
+            live: "https://solar-system-observation.vercel.app/"
+        },
+        {
+            title: "BioSphere",
+            category: "3D Education / WebGL",
+            description: "An immersive 3D biology learning platform exploring life at every scale—from interactive cells, DNA replication, and viruses to organ systems and food webs in real-time.",
+            tech: ["Next.js", "React Three Fiber", "Three.js", "Tailwind CSS"],
+            github: "https://github.com/Mrankit47/Biosphere-",
+            live: "https://biosphere-eatr.vercel.app/"
+        },
+        {
             title: "The Virtual Canvas",
             category: "Full Stack / RBAC",
             description: "RBAC-based full-stack web application with secure authentication, dynamic dashboards, and responsive UI for efficient user management.",
