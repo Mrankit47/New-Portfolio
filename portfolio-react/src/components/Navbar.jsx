@@ -12,7 +12,7 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const navLinks = ['About', 'Skills', 'Experience', 'Projects', 'Contact'];
+    const navLinks = ['Home', 'About', 'Skills', 'Experience', 'Projects', 'Education', 'Contact'];
 
     return (
         <>
@@ -27,7 +27,7 @@ const Navbar = () => {
                         <a 
                             key={item} 
                             href={`#${item.toLowerCase()}`}
-                            className="text-xs md:text-sm font-mono tracking-[0.2em] uppercase text-white hover:text-accent transition-all duration-300 relative group"
+                            className="text-[10px] md:text-xs font-mono tracking-[0.2em] uppercase text-white hover:text-accent transition-all duration-300 relative group"
                         >
                             {item}
                             <span className="absolute -bottom-1 left-0 w-0 h-px bg-accent transition-all duration-300 group-hover:w-full"></span>
@@ -55,9 +55,11 @@ const Navbar = () => {
                         key={item} 
                         href={`#${item.toLowerCase()}`}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="text-xl font-mono tracking-[0.25em] uppercase text-white/80 hover:text-accent transition-all duration-300"
+                        className="text-lg font-mono tracking-[0.25em] uppercase text-white/80 hover:text-accent transition-all duration-300"
                     >
-                        <span className="text-accent/50 text-xs mr-3 font-mono">0{idx + 1}.</span>
+                        {item !== 'Home' && (
+                            <span className="text-accent/50 text-[10px] mr-3 font-mono">0{idx}.</span>
+                        )}
                         {item}
                     </a>
                 ))}

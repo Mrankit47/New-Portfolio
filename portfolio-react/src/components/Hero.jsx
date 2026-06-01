@@ -75,7 +75,7 @@ const Hero = () => {
     }, [charIndex, isDeleting, roleIndex]);
 
     return (
-        <section className="min-h-screen flex items-center px-4 sm:px-6 md:px-24 pt-24 sm:pt-32 pb-12 sm:pb-20 relative overflow-hidden">
+        <section id="home" className="min-h-screen flex items-center px-4 sm:px-6 md:px-24 pt-24 sm:pt-32 pb-12 sm:pb-20 relative overflow-hidden">
             <div className="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16 items-center">
                 
                 <div className="relative z-10 text-center lg:text-left">
