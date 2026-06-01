@@ -224,6 +224,11 @@ main, #bg-canvas {
 .cyber-gradient-border {
   position: relative;
   background: rgba(15, 15, 15, 0.6);
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.cyber-gradient-border:hover {
+  box-shadow: 0 0 30px 2px rgba(139, 92, 246, 0.25), 0 15px 35px -5px rgba(0, 0, 0, 0.6);
 }
 
 .cyber-gradient-border::before {

@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger);
 // ==========================================
 // Reusable sub-component: TechCard
 // ==========================================
-const TechCard = ({ name, iconClass, svg, color, index }) => {
+const TechCard = ({ name, iconClass, svg, color, index, url }) => {
     const cardRef = useRef(null);
     const [tilt, setTilt] = useState({ x: 0, y: 0 });
     const [isHovered, setIsHovered] = useState(false);
@@ -37,6 +37,12 @@ const TechCard = ({ name, iconClass, svg, color, index }) => {
 
     const handleMouseEnter = () => {
         setIsHovered(true);
+    };
+
+    const handleClick = () => {
+        if (url) {
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
     };
 
     // Style mapping for dynamic glow matching the technology color
@@ -73,6 +79,7 @@ const TechCard = ({ name, iconClass, svg, color, index }) => {
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            onClick={handleClick}
         >
             {/* Holographic scanner effect line inside card on hover */}
             <div className="absolute inset-0 w-full h-[2px] bg-gradient-to-r from-transparent via-white/20 to-transparent top-0 group-hover:top-[100%] transition-all duration-1000 ease-in-out opacity-0 group-hover:opacity-100 pointer-events-none" />
@@ -112,7 +119,7 @@ const TechCard = ({ name, iconClass, svg, color, index }) => {
 // ==========================================
 const TechCategory = ({ category, items, catIdx }) => {
     return (
-        <div className="tech-category-wrapper relative rounded-2xl overflow-hidden p-[1px] transition-all duration-500 hover:scale-[1.01]">
+        <div className="tech-category-wrapper relative rounded-2xl p-[1px] transition-all duration-500 hover:scale-[1.01]">
             {/* The Animated Conic Gradient Neon Border card */}
             <div className="cyber-gradient-border rounded-2xl h-full w-full">
                 <div className="bg-[#0c0c0d]/90 backdrop-blur-2xl rounded-2xl p-4 sm:p-5 h-full flex flex-col justify-between relative overflow-hidden">
@@ -149,6 +156,7 @@ const TechCategory = ({ category, items, catIdx }) => {
                                 svg={skill.svg}
                                 color={skill.color}
                                 index={sIdx}
+                                url={skill.url}
                             />
                         ))}
                     </div>
@@ -166,42 +174,43 @@ const Skills = () => {
         {
             category: "Languages",
             items: [
-                { name: "Python", iconClass: "devicon-python-plain colored", color: "#3776AB" },
-                { name: "C", iconClass: "devicon-c-plain colored", color: "#A8B9CC" },
-                { name: "C++", iconClass: "devicon-cplusplus-plain colored", color: "#00599C" },
+                { name: "Python", iconClass: "devicon-python-plain colored", color: "#3776AB", url: "https://docs.python.org/3/" },
+                { name: "C", iconClass: "devicon-c-plain colored", color: "#60A5FA", url: "https://en.cppreference.com/w/c" },
+                { name: "C++", iconClass: "devicon-cplusplus-plain colored", color: "#3B82F6", url: "https://en.cppreference.com/w/cpp" },
             ]
         },
         {
             category: "Frontend",
             items: [
-                { name: "HTML5", iconClass: "devicon-html5-plain colored", color: "#E34F26" },
-                { name: "CSS3", iconClass: "devicon-css3-plain colored", color: "#1572B6" },
-                { name: "React", iconClass: "devicon-react-original colored", color: "#61DAFB" },
+                { name: "HTML5", iconClass: "devicon-html5-plain colored", color: "#E34F26", url: "https://developer.mozilla.org/en-US/docs/Web/HTML" },
+                { name: "CSS3", iconClass: "devicon-css3-plain colored", color: "#1572B6", url: "https://developer.mozilla.org/en-US/docs/Web/CSS" },
+                { name: "React", iconClass: "devicon-react-original colored", color: "#61DAFB", url: "https://react.dev" },
             ]
         },
         {
             category: "Backend",
             items: [
-                { name: "Django", iconClass: "devicon-django-plain colored", color: "#092E20" },
-                { name: "FastAPI", iconClass: "devicon-fastapi-plain colored", color: "#009688" },
+                { name: "Django", iconClass: "devicon-django-plain colored", color: "#10B981", url: "https://docs.djangoproject.com/" },
+                { name: "FastAPI", iconClass: "devicon-fastapi-plain colored", color: "#009688", url: "https://fastapi.tiangolo.com/" },
             ]
         },
         {
             category: "Databases",
             items: [
-                { name: "PostgreSQL", iconClass: "devicon-postgresql-plain colored", color: "#4169E1" },
-                { name: "SQLite", iconClass: "devicon-sqlite-plain colored", color: "#003B57" },
-                { name: "Supabase", iconClass: "devicon-supabase-plain colored", color: "#3ECF8E" },
+                { name: "PostgreSQL", iconClass: "devicon-postgresql-plain colored", color: "#4169E1", url: "https://www.postgresql.org/docs/" },
+                { name: "SQLite", iconClass: "devicon-sqlite-plain colored", color: "#38BDF8", url: "https://www.sqlite.org/docs.html" },
+                { name: "Supabase", iconClass: "devicon-supabase-plain colored", color: "#3ECF8E", url: "https://supabase.com/docs" },
             ]
         },
         {
             category: "Tools",
             items: [
-                { name: "GitHub", iconClass: "devicon-github-original text-white", color: "#A8B9CC" },
-                { name: "VS Code", iconClass: "devicon-vscode-plain colored", color: "#007ACC" },
+                { name: "GitHub", iconClass: "devicon-github-original text-white", color: "#FFFFFF", url: "https://docs.github.com/" },
+                { name: "VS Code", iconClass: "devicon-vscode-plain colored", color: "#007ACC", url: "https://code.visualstudio.com/docs" },
                 { 
                     name: "Antigravity", 
                     color: "#A78BFA", 
+                    url: "https://xkcd.com/353/",
                     svg: (
                         <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.5">
                             <circle cx="12" cy="12" r="9" strokeDasharray="3 3" className="animate-spin" style={{ animationDuration: '15s' }} />
@@ -216,15 +225,17 @@ const Skills = () => {
         {
             category: "Deployment",
             items: [
-                { name: "Vercel", iconClass: "devicon-vercel-original text-white", color: "#E5E5E5" },
+                { name: "Vercel", iconClass: "devicon-vercel-original text-white", color: "#FFFFFF", url: "https://vercel.com/docs" },
                 { 
                     name: "Render", 
                     color: "#46E3B7", 
+                    url: "https://render.com/docs",
                     svg: <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor"><path d="M18.263.007c-3.121-.147-5.744 2.109-6.192 5.082-.018.138-.045.272-.067.405-.696 3.703-3.936 6.507-7.827 6.507-1.388 0-2.691-.356-3.825-.979a.2024.2024 0 0 0-.302.178V24H12v-8.999c0-1.656 1.338-3 2.987-3h2.988c3.382 0 6.103-2.817 5.97-6.244-.12-3.084-2.61-5.603-5.682-5.75"/></svg> 
                 },
                 { 
                     name: "Railway", 
-                    color: "#F1F1F1", 
+                    color: "#FF007A", 
+                    url: "https://docs.railway.app/",
                     svg: <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor"><path d="M.113 10.27A13.026 13.026 0 000 11.48h18.23c-.064-.125-.15-.237-.235-.347-3.117-4.027-4.793-3.677-7.19-3.78-.8-.034-1.34-.048-4.524-.048-1.704 0-3.555.005-5.358.01-.234.63-.459 1.24-.567 1.737h9.342v1.216H.113v.002zm18.26 2.426H.009c.02.326.05.645.094.961h16.955c.754 0 1.179-.429 1.315-.96zm-17.318 4.28s2.81 6.902 10.93 7.024c4.855 0 9.027-2.883 10.92-7.024H1.056zM11.988 0C7.5 0 3.593 2.466 1.531 6.108l4.75-.005v-.002c3.71 0 3.849.016 4.573.047l.448.016c1.563.052 3.485.22 4.996 1.364.82.621 2.007 1.99 2.712 2.965.654.902.842 1.94.396 2.934-.408.914-1.289 1.458-2.353 1.458H.391s.099.42.249.886h22.748A12.026 12.026 0 0024 12.005C24 5.377 18.621 0 11.988 0z"/></svg> 
                 },
             ]
