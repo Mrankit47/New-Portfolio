@@ -5,7 +5,7 @@ const Hero = () => {
     const titleRef = useRef(null);
     const hudRef = useRef(null);
     const [typewriterText, setTypewriterText] = useState("");
-    const roles = ["FULL STACK DEVELOPER", "PYTHON DEVELOPER"];
+    const roles = ["FULL STACK DEVELOPER", "PYTHON DEVELOPER", "SOFTWARE ENGINEER"];
     const [roleIndex, setRoleIndex] = useState(0);
     const [isDeleting, setIsDeleting] = useState(false);
     const [charIndex, setCharIndex] = useState(0);
@@ -171,7 +171,7 @@ const Hero = () => {
                             </button>
                         </div>
                         <div className="flex-1 w-full bg-black/50 overflow-hidden flex items-center justify-center p-2">
-                            <iframe src="/assets/docs/Ankit_Kushwah.pdf" className="w-full h-full border-0 bg-white rounded-lg" title="Resume" />
+                            <iframe src="/assets/docs/Ankit_kushwah.pdf" className="w-full h-full border-0 bg-white rounded-lg" title="Resume" />
                         </div>
                     </div>
                 </div>
