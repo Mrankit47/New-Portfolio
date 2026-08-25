@@ -158,20 +158,50 @@ const Hero = () => {
                     onClick={() => setIsResumeModalOpen(false)}
                 >
                     <div 
-                        className="relative w-full max-w-5xl h-[80vh] bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden flex flex-col"
+                        className="relative w-full max-w-5xl h-[85vh] bg-[#0a0a0a] border border-white/10 rounded-xl overflow-hidden flex flex-col shadow-2xl"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="flex justify-between items-center p-4 border-b border-white/10 bg-[#0a0a0a] z-10">
-                            <h3 className="text-white font-bold truncate pr-4">Ankit Kushwah - Resume</h3>
-                            <button 
-                                onClick={() => setIsResumeModalOpen(false)}
-                                className="text-white/60 hover:text-accent transition-colors p-1"
-                            >
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                            </button>
+                            <h3 className="text-white font-bold truncate pr-4 text-sm sm:text-base">Ankit Kushwah - Resume</h3>
+                            <div className="flex items-center gap-2 sm:gap-3">
+                                <a 
+                                    href="/assets/docs/Ankit_Kushwah.pdf" 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-1.5 text-xs font-mono text-white/70 hover:text-accent bg-white/5 hover:bg-white/10 px-2.5 sm:px-3 py-1.5 rounded-lg border border-white/10 transition-colors"
+                                    title="Open in new tab"
+                                >
+                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                    </svg>
+                                    <span className="hidden sm:inline">Open Tab</span>
+                                </a>
+                                <a 
+                                    href="/assets/docs/Ankit_Kushwah.pdf" 
+                                    download="Ankit_Kushwah_Resume.pdf"
+                                    className="flex items-center gap-1.5 text-xs font-mono text-white/70 hover:text-accent bg-white/5 hover:bg-white/10 px-2.5 sm:px-3 py-1.5 rounded-lg border border-white/10 transition-colors"
+                                    title="Download Resume"
+                                >
+                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                    </svg>
+                                    <span className="hidden sm:inline">Download</span>
+                                </a>
+                                <button 
+                                    onClick={() => setIsResumeModalOpen(false)}
+                                    className="text-white/60 hover:text-accent transition-colors p-1"
+                                    title="Close"
+                                >
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </button>
+                            </div>
                         </div>
                         <div className="flex-1 w-full bg-black/50 overflow-hidden flex items-center justify-center p-2">
-                            <iframe src="/assets/docs/Ankit_kushwah.pdf" className="w-full h-full border-0 bg-white rounded-lg" title="Resume" />
+                            <iframe 
+                                src="/assets/docs/Ankit_Kushwah.pdf" 
+                                className="w-full h-full border-0 bg-white rounded-lg" 
+                                title="Resume" 
+                            />
                         </div>
                     </div>
                 </div>
