@@ -280,5 +280,61 @@ main, #bg-canvas {
   backface-visibility: hidden;
 }
 
+/* Radar & Cyber Animations */
+@keyframes radarSweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-radar-sweep {
+  animation: radarSweep 6s linear infinite;
+}
+
+@keyframes cyberScanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(1000%);
+  }
+}
+
+.animate-scanline {
+  animation: cyberScanline 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes hudGlowPulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-hud-pulse {
+  animation: hudGlowPulse 2.5s ease-in-out infinite;
+}
+
+/* Custom mini scrollbar for Cyber HUD */
+.cyber-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.cyber-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+.cyber-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.3);
+  border-radius: 4px;
+}
+.cyber-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.7);
+}
+
+
 
 
