@@ -19,13 +19,13 @@ const Background = () => {
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        // Create a plane geometry with many segments
-        const geometry = new THREE.PlaneGeometry(50, 50, 100, 100);
+        // Create a plane geometry with optimized segment count for high-FPS performance
+        const geometry = new THREE.PlaneGeometry(45, 45, 25, 25);
         const material = new THREE.MeshBasicMaterial({ 
             color: 0x8b5cf6, 
             wireframe: true, 
             transparent: true, 
-            opacity: 0.15 
+            opacity: 0.12 
         });
         const mesh = new THREE.Mesh(geometry, material);
         scene.add(mesh);
@@ -37,36 +37,40 @@ const Background = () => {
         // Mouse Interaction
         let mouseX = 0;
         let mouseY = 0;
+        let targetMouseX = 0;
+        let targetMouseY = 0;
+
         const onMouseMove = (e) => {
-            mouseX = (e.clientX / window.innerWidth) - 0.5;
-            mouseY = (e.clientY / window.innerHeight) - 0.5;
+            targetMouseX = (e.clientX / window.innerWidth) - 0.5;
+            targetMouseY = (e.clientY / window.innerHeight) - 0.5;
         };
-        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mousemove', onMouseMove, { passive: true });
 
         const clock = new THREE.Clock();
-
         let animationFrameId;
 
-        const animate = () => {
-            const elapsedTime = clock.getElapsedTime();
+        const positionAttribute = geometry.attributes.position;
+        const vertexCount = positionAttribute.count;
 
-            // Animate Vertices
-            const positionAttribute = geometry.attributes.position;
-            for (let i = 0; i < positionAttribute.count; i++) {
+        const animate = () => {
+            const elapsedTime = clock.getElapsedTime() * 0.8;
+
+            // Animate Vertices with optimized math
+            for (let i = 0; i < vertexCount; i++) {
                 const x = positionAttribute.getX(i);
                 const y = positionAttribute.getY(i);
                 
                 // Create wave effect
-                const wave1 = Math.sin(x * 0.5 + elapsedTime) * 0.5;
-                const wave2 = Math.sin(y * 0.3 + elapsedTime * 0.8) * 0.5;
-                
-                positionAttribute.setZ(i, wave1 + wave2);
+                const wave = Math.sin(x * 0.4 + elapsedTime) * 0.45 + Math.sin(y * 0.25 + elapsedTime * 0.7) * 0.45;
+                positionAttribute.setZ(i, wave);
             }
             positionAttribute.needsUpdate = true;
 
-            // Smooth rotation based on mouse
-            mesh.rotation.z += (mouseX * 0.05 - mesh.rotation.z) * 0.1;
-            mesh.rotation.y += (mouseY * 0.05 - mesh.rotation.y) * 0.1;
+            // Smooth rotation interpolation
+            mouseX += (targetMouseX - mouseX) * 0.05;
+            mouseY += (targetMouseY - mouseY) * 0.05;
+            mesh.rotation.z = mouseX * 0.08;
+            mesh.rotation.y = mouseY * 0.08;
 
             renderer.render(scene, camera);
             animationFrameId = requestAnimationFrame(animate);

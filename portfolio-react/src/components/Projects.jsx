@@ -53,6 +53,7 @@ const PROJECTS_DATA = [
         tech: ["Django", "PostgreSQL", "Tailwind CSS"],
         github: "https://github.com/Mrankit47/Tally-Erp-System",
         live: "https://tally-erp-system.onrender.com",
+        image: "/projects/tally_erp_preview.png",
         color: "#059669",
         badge: "ENTERPRISE ERP",
         accentGradient: "from-green-900/40 via-emerald-900/20 to-black"
@@ -66,6 +67,7 @@ const PROJECTS_DATA = [
         tech: ["Django", "PostgreSQL", "Python"],
         github: "https://github.com/Mrankit47/Leads-management-",
         live: "https://leads-management-egfi.onrender.com",
+        image: "/projects/leads_management_preview.png",
         color: "#EC4899",
         badge: "CRM PLATFORM",
         accentGradient: "from-pink-900/40 via-rose-900/20 to-black"
@@ -116,14 +118,21 @@ const ProjectCard = ({ project, isActive, onSelect }) => {
             {/* Live Website Background Layer              */}
             {/* ========================================== */}
             <div className={`absolute inset-0 z-0 overflow-hidden bg-gradient-to-br ${project.accentGradient}`}>
-                {/* Lazy-loaded Iframe on Hover / Click for 100% Lag-Free Scrolling */}
-                {loadIframe ? (
+                {/* Real Screenshot Preview or Lazy-loaded Iframe */}
+                {project.image ? (
+                    <img
+                        src={project.image}
+                        alt={`${project.title} live interface preview`}
+                        loading="lazy"
+                        className="absolute inset-0 w-full h-full object-cover object-top opacity-50 group-hover:opacity-85 group-hover:scale-105 transition-all duration-700 pointer-events-none"
+                    />
+                ) : loadIframe ? (
                     <iframe
                         src={project.live}
                         title={`${project.title} live website preview`}
                         loading="lazy"
                         tabIndex={-1}
-                        className="absolute -top-[10%] -left-[10%] w-[160%] h-[160%] scale-[0.62] origin-top-left pointer-events-none opacity-40 group-hover:opacity-75 transition-opacity duration-500 border-0 filter brightness-[0.9] contrast-[1.05]"
+                        className="absolute top-0 left-0 w-[200%] h-[200%] scale-50 origin-top-left pointer-events-none opacity-40 group-hover:opacity-80 transition-opacity duration-500 border-0 filter brightness-[0.9] contrast-[1.05]"
                     />
                 ) : (
                     /* Lightweight Cyber Grid & Ambient Art Preview */
@@ -255,8 +264,11 @@ const Projects = () => {
     const sectionRef = useRef(null);
     const triggerRef = useRef(null);
     const trackRef = useRef(null);
-    const [scrollProgress, setScrollProgress] = useState(0);
-    const [activeProjectIndex, setActiveProjectIndex] = useState(0);
+    const progressTextRef = useRef(null);
+    const progressBarRef = useRef(null);
+    const activeTitleRef = useRef(null);
+    const activeIndexRef = useRef(null);
+    const navPillsRef = useRef([]);
 
     useEffect(() => {
         const ctx = gsap.context(() => {
@@ -280,12 +292,15 @@ const Projects = () => {
                 }
             );
 
-            // Calculate precise horizontal scroll width so all 7 projects (including Leads Management) slide fully
+            // Calculate precise horizontal scroll width
             const getScrollDistance = () => {
                 const totalWidth = track.scrollWidth;
                 const viewWidth = window.innerWidth;
                 return Math.max(0, totalWidth - viewWidth + 160);
             };
+
+            // Direct DOM update on scroll for 0 React re-renders & 60FPS smoothness
+            let lastIdx = 0;
 
             const pinTimeline = gsap.to(track, {
                 x: () => -getScrollDistance(),
@@ -294,40 +309,66 @@ const Projects = () => {
                     trigger: trigger,
                     start: "top top",
                     end: () => `+=${getScrollDistance()}`,
-                    scrub: 0.8,
+                    scrub: 0.5,
                     pin: true,
                     anticipatePin: 1,
                     invalidateOnRefresh: true,
+                    fastScrollEnd: true,
                     onUpdate: (self) => {
                         const progress = self.progress;
-                        setScrollProgress(Math.round(progress * 100));
+                        const pct = Math.round(progress * 100);
+                        
+                        // Direct DOM manipulation - 0 React re-renders
+                        if (progressTextRef.current) {
+                            progressTextRef.current.textContent = `${pct}%`;
+                        }
+                        if (progressBarRef.current) {
+                            progressBarRef.current.style.width = `${pct}%`;
+                        }
+
                         const activeIdx = Math.min(
                             PROJECTS_DATA.length - 1,
                             Math.floor(progress * PROJECTS_DATA.length)
                         );
-                        setActiveProjectIndex(activeIdx);
+
+                        if (activeIdx !== lastIdx) {
+                            lastIdx = activeIdx;
+                            if (activeTitleRef.current) {
+                                activeTitleRef.current.textContent = PROJECTS_DATA[activeIdx].title;
+                            }
+                            if (activeIndexRef.current) {
+                                activeIndexRef.current.textContent = PROJECTS_DATA[activeIdx].index;
+                            }
+
+                            // Update active nav pill styling
+                            navPillsRef.current.forEach((pill, i) => {
+                                if (pill) {
+                                    if (i === activeIdx) {
+                                        pill.className = "px-2.5 py-1 rounded-md text-[10px] font-mono transition-all cursor-pointer border bg-accent/20 border-accent text-white font-bold";
+                                    } else {
+                                        pill.className = "px-2.5 py-1 rounded-md text-[10px] font-mono transition-all cursor-pointer border bg-white/[0.02] border-white/[0.06] text-white/40 hover:text-white";
+                                    }
+                                }
+                            });
+                        }
                     }
                 }
             });
 
-            // Ensure ScrollTrigger refreshes accurately after mounting
             ScrollTrigger.refresh();
         }, sectionRef);
 
         return () => ctx.revert();
     }, []);
 
-    // Quick Jump button handler to smoothly scroll to any specific project
+    // Quick Jump button handler
     const scrollToProject = (index) => {
         const trigger = triggerRef.current;
         const track = trackRef.current;
         if (!trigger || !track) return;
 
-        const st = ScrollTrigger.getById(trigger);
         const totalDistance = track.scrollWidth - window.innerWidth + 160;
         const progressTarget = index / (PROJECTS_DATA.length - 1);
-
-        // Find scroll position corresponding to this project
         const scrollStart = trigger.offsetTop;
         const targetScroll = scrollStart + progressTarget * totalDistance;
 
@@ -372,9 +413,10 @@ const Projects = () => {
                             {PROJECTS_DATA.map((p, i) => (
                                 <button
                                     key={p.id}
+                                    ref={(el) => (navPillsRef.current[i] = el)}
                                     onClick={() => scrollToProject(i)}
                                     className={`px-2.5 py-1 rounded-md text-[10px] font-mono transition-all cursor-pointer border ${
-                                        activeProjectIndex === i
+                                        i === 0
                                             ? "bg-accent/20 border-accent text-white font-bold"
                                             : "bg-white/[0.02] border-white/[0.06] text-white/40 hover:text-white"
                                     }`}
@@ -386,11 +428,12 @@ const Projects = () => {
 
                         {/* Progress readout */}
                         <div className="px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.08] text-white/70 flex items-center space-x-2 text-xs font-mono">
-                            <span className="text-accent font-semibold">{scrollProgress}%</span>
+                            <span ref={progressTextRef} className="text-accent font-semibold">0%</span>
                             <div className="w-16 sm:w-20 h-1 bg-white/10 rounded-full overflow-hidden">
                                 <div 
-                                    className="h-full bg-accent transition-all duration-150"
-                                    style={{ width: `${scrollProgress}%` }}
+                                    ref={progressBarRef}
+                                    className="h-full bg-accent transition-all duration-75"
+                                    style={{ width: '0%' }}
                                 />
                             </div>
                         </div>
@@ -411,7 +454,6 @@ const Projects = () => {
                             <ProjectCard
                                 key={project.id}
                                 project={project}
-                                isActive={activeProjectIndex === idx}
                                 onSelect={() => scrollToProject(idx)}
                             />
                         ))}
@@ -421,7 +463,7 @@ const Projects = () => {
                 {/* Bottom Footer Telemetry */}
                 <div className="relative z-20 flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-white/40 border-t border-white/[0.06] pt-2.5">
                     <span>
-                        VIEWING: <span className="text-white font-bold">{PROJECTS_DATA[activeProjectIndex]?.title}</span> ({PROJECTS_DATA[activeProjectIndex]?.index} / 07)
+                        VIEWING: <span ref={activeTitleRef} className="text-white font-bold">{PROJECTS_DATA[0].title}</span> (<span ref={activeIndexRef}>{PROJECTS_DATA[0].index}</span> / 07)
                     </span>
                     <span className="hidden sm:inline text-accent">
                         ✦ SCROLL MOUSE DOWN TO SLIDE PROJECTS →
