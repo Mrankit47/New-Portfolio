@@ -9,21 +9,17 @@ const CustomCursor = () => {
         const cursorDot = cursorDotRef.current;
         const cursorOutline = cursorOutlineRef.current;
 
+        // High performance quickTo setters for zero garbage collection overhead
+        const setDotX = gsap.quickTo(cursorDot, "x", { duration: 0.08, ease: "power2.out" });
+        const setDotY = gsap.quickTo(cursorDot, "y", { duration: 0.08, ease: "power2.out" });
+        const setOutlineX = gsap.quickTo(cursorOutline, "x", { duration: 0.25, ease: "power3.out" });
+        const setOutlineY = gsap.quickTo(cursorOutline, "y", { duration: 0.25, ease: "power3.out" });
+
         const onMouseMove = (e) => {
-            // Inner dot follows instantly
-            gsap.to(cursorDot, {
-                x: e.clientX,
-                y: e.clientY,
-                duration: 0.1,
-                ease: "power2.out"
-            });
-            // Outer circle follows with slight delay
-            gsap.to(cursorOutline, {
-                x: e.clientX,
-                y: e.clientY,
-                duration: 0.4,
-                ease: "power3.out"
-            });
+            setDotX(e.clientX);
+            setDotY(e.clientY);
+            setOutlineX(e.clientX);
+            setOutlineY(e.clientY);
         };
 
         const onMouseDown = () => {
