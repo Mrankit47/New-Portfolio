@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useCallback, memo } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -27,6 +27,7 @@ const PROJECTS_DATA = [
         tech: ["Next.js", "React Three Fiber", "Three.js", "Tailwind CSS"],
         github: "https://github.com/Mrankit47/Biosphere-",
         live: "https://biosphere-eatr.vercel.app/",
+        image: "/projects/biosphere_preview.png",
         color: "#10B981",
         badge: "3D SIMULATION",
         accentGradient: "from-emerald-900/40 via-teal-900/20 to-black"
@@ -40,6 +41,7 @@ const PROJECTS_DATA = [
         tech: ["Next.js", "Tailwind CSS", "Sanity CMS"],
         github: "https://github.com/Mrankit47/The-Virtual-Canvas",
         live: "https://the-virtual-canvas-tvc.vercel.app/",
+        image: "/projects/virtual_canvas_preview.png",
         color: "#3B82F6",
         badge: "FULL-STACK",
         accentGradient: "from-blue-900/40 via-sky-900/20 to-black"
@@ -81,6 +83,7 @@ const PROJECTS_DATA = [
         tech: ["React", "Django", "PostgreSQL"],
         github: "https://github.com/Mrankit47/school-management-system",
         live: "https://school-management-system-1-ucmf.onrender.com",
+        image: "/projects/school_management_preview.png",
         color: "#06B6D4",
         badge: "EDUCATION PORTAL",
         accentGradient: "from-cyan-900/40 via-teal-900/20 to-black"
@@ -94,53 +97,65 @@ const PROJECTS_DATA = [
         tech: ["React", "Tailwind CSS"],
         github: "",
         live: "https://eagleinclouds.com/",
+        image: "/projects/eagle_in_cloud_preview.png",
         color: "#F59E0B",
         badge: "CLIENT UI/UX",
         accentGradient: "from-amber-900/40 via-yellow-900/20 to-black"
+    },
+    {
+        id: "furniture-website",
+        title: "Chauhan Aluminium",
+        category: "Landing Page / Frontend",
+        index: "08",
+        description: "A modern bilingual landing page for Chauhan Aluminium & Door House, Indore — showcasing aluminium doors, windows, glass work, and steel railings with WhatsApp integration.",
+        tech: ["HTML", "CSS", "JavaScript"],
+        github: "",
+        live: "https://furniture-website-landing-page-1.onrender.com/",
+        image: "/projects/furniture_preview.png",
+        color: "#D97706",
+        badge: "LANDING PAGE",
+        accentGradient: "from-orange-900/40 via-amber-900/20 to-black"
     }
 ];
 
-const ProjectCard = ({ project, isActive, onSelect }) => {
-    const [isHovered, setIsHovered] = useState(false);
-    const [loadIframe, setLoadIframe] = useState(false);
-
+/* ─────────────────────────────────────────────────────────────────────
+   ProjectCard — GPU-optimized, zero-rerender card
+   • No iframe — images only (no heavy WebGL/DOM in background)
+   • Scoped CSS transitions (only opacity, border-color, box-shadow)
+   • contain: strict for full layout/paint isolation
+   ───────────────────────────────────────────────────────────────────── */
+const ProjectCard = memo(({ project }) => {
     return (
         <div
-            onMouseEnter={() => {
-                setIsHovered(true);
-                setLoadIframe(true);
+            className="project-card group"
+            style={{
+                '--card-color': project.color,
+                contain: 'strict',
+                contentVisibility: 'auto',
+                containIntrinsicSize: '680px 480px',
             }}
-            onMouseLeave={() => setIsHovered(false)}
-            className="group relative w-[88vw] sm:w-[540px] md:w-[620px] lg:w-[680px] h-[400px] sm:h-[450px] md:h-[480px] flex-shrink-0 rounded-2xl overflow-hidden border border-white/[0.08] bg-[#0c0c0f] shadow-2xl transition-all duration-300 hover:border-accent/60 hover:shadow-[0_20px_50px_rgba(139,92,246,0.2)] flex flex-col justify-between"
-            style={{ contain: 'paint layout' }}
         >
-            {/* ========================================== */}
-            {/* Live Website Background Layer              */}
-            {/* ========================================== */}
+            {/* ── Background Layer ── */}
             <div className={`absolute inset-0 z-0 overflow-hidden bg-gradient-to-br ${project.accentGradient}`}>
-                {/* Real Screenshot Preview or Lazy-loaded Iframe */}
                 {project.image ? (
                     <img
                         src={project.image}
-                        alt={`${project.title} live interface preview`}
+                        alt={`${project.title} preview`}
                         loading="lazy"
-                        className="absolute inset-0 w-full h-full object-cover object-top opacity-50 group-hover:opacity-85 group-hover:scale-105 transition-all duration-700 pointer-events-none"
-                    />
-                ) : loadIframe ? (
-                    <iframe
-                        src={project.live}
-                        title={`${project.title} live website preview`}
-                        loading="lazy"
-                        tabIndex={-1}
-                        className="absolute top-0 left-0 w-[200%] h-[200%] scale-50 origin-top-left pointer-events-none opacity-40 group-hover:opacity-80 transition-opacity duration-500 border-0 filter brightness-[0.9] contrast-[1.05]"
+                        decoding="async"
+                        className="project-card-img"
                     />
                 ) : (
-                    /* Lightweight Cyber Grid & Ambient Art Preview */
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden opacity-30 group-hover:opacity-50 transition-opacity">
+                    /* Lightweight ambient placeholder — no iframe */
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden opacity-30 group-hover:opacity-50 transition-opacity duration-500">
                         <div className="absolute inset-0 cyber-grid-bg opacity-30" />
                         <div
-                            className="w-[300px] h-[300px] rounded-full filter blur-[80px]"
-                            style={{ backgroundColor: `${project.color}33` }}
+                            className="w-[300px] h-[300px] rounded-full"
+                            style={{
+                                backgroundColor: `${project.color}33`,
+                                filter: 'blur(80px)',
+                                willChange: 'auto',
+                            }}
                         />
                         <div className="relative font-mono text-5xl font-black text-white/[0.04] select-none tracking-widest uppercase">
                             {project.title}
@@ -148,28 +163,29 @@ const ProjectCard = ({ project, isActive, onSelect }) => {
                     </div>
                 )}
 
-                {/* Gradient Overlay for Ultra-Crisp Text Readability */}
+                {/* Gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0b0b0b] via-[#0b0b0b]/85 to-[#0b0b0b]/40 pointer-events-none" />
 
-                {/* Dynamic Brand Spotlight Glow */}
+                {/* Hover glow — GPU composited */}
                 <div
                     className="absolute inset-0 opacity-0 group-hover:opacity-15 transition-opacity duration-500 pointer-events-none"
-                    style={{ background: `radial-gradient(circle at center, ${project.color} 0%, transparent 80%)` }}
+                    style={{
+                        background: `radial-gradient(circle at center, ${project.color} 0%, transparent 80%)`,
+                        willChange: 'opacity',
+                    }}
                 />
             </div>
 
-            {/* ========================================== */}
-            {/* Mock Browser Top Header Bar                */}
-            {/* ========================================== */}
-            <div className="relative z-10 px-4 sm:px-5 py-3 border-b border-white/[0.08] bg-[#0a0a0d]/80 backdrop-blur-md flex items-center justify-between">
-                {/* Window Traffic Dots */}
+            {/* ── Browser Chrome Bar ── */}
+            <div className="relative z-10 px-4 sm:px-5 py-3 border-b border-white/[0.08] bg-[#0a0a0d]/90 flex items-center justify-between">
+                {/* Traffic dots */}
                 <div className="flex items-center space-x-1.5">
                     <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
                     <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
                     <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
                 </div>
 
-                {/* Mock URL Chip */}
+                {/* URL chip */}
                 <div className="px-3 py-1 rounded-md bg-black/50 border border-white/[0.06] text-[10px] sm:text-[11px] font-mono text-white/60 flex items-center space-x-1.5 max-w-[200px] sm:max-w-[340px] truncate">
                     <svg className="w-3 h-3 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -177,18 +193,16 @@ const ProjectCard = ({ project, isActive, onSelect }) => {
                     <span className="truncate">{project.live.replace('https://', '')}</span>
                 </div>
 
-                {/* Live Badge */}
+                {/* Live badge — static dot instead of animate-pulse during scroll */}
                 <div className="flex items-center space-x-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 live-dot" />
                     <span className="text-[9px] font-mono text-emerald-400 font-semibold uppercase tracking-wider hidden sm:inline">
                         LIVE
                     </span>
                 </div>
             </div>
 
-            {/* ========================================== */}
-            {/* Card Body & Details                        */}
-            {/* ========================================== */}
+            {/* ── Card Body ── */}
             <div className="relative z-10 p-5 sm:p-7 flex-1 flex flex-col justify-end">
                 <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center space-x-2">
@@ -212,7 +226,7 @@ const ProjectCard = ({ project, isActive, onSelect }) => {
                             href={project.github}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-white/40 hover:text-white transition-colors p-1"
+                            className="text-white/40 hover:text-white transition-colors duration-200 p-1"
                             title="View GitHub Repository"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -222,7 +236,7 @@ const ProjectCard = ({ project, isActive, onSelect }) => {
                     )}
                 </div>
 
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 group-hover:text-accent transition-colors">
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2 group-hover:text-accent transition-colors duration-300">
                     {project.title}
                 </h3>
 
@@ -247,10 +261,10 @@ const ProjectCard = ({ project, isActive, onSelect }) => {
                         href={project.live}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-lg bg-accent hover:bg-accent/80 text-white text-xs font-mono font-semibold transition-all shadow-lg hover:shadow-accent/40 group/btn"
+                        className="launch-btn inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-lg bg-accent hover:bg-accent/80 text-white text-xs font-mono font-semibold shadow-lg group/btn"
                     >
                         <span>LAUNCH SITE</span>
-                        <svg className="w-3.5 h-3.5 transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-3.5 h-3.5 transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
                     </a>
@@ -258,8 +272,18 @@ const ProjectCard = ({ project, isActive, onSelect }) => {
             </div>
         </div>
     );
-};
+});
 
+ProjectCard.displayName = 'ProjectCard';
+
+
+/* ─────────────────────────────────────────────────────────────────────
+   Projects Section — Buttery-smooth horizontal scroll
+   • scrub: true (direct 1:1 mapping, no interpolation lag)
+   • All onUpdate DOM writes batched
+   • No React state changes during scroll
+   • GPU-composited track via translate3d
+   ───────────────────────────────────────────────────────────────────── */
 const Projects = () => {
     const sectionRef = useRef(null);
     const triggerRef = useRef(null);
@@ -276,7 +300,7 @@ const Projects = () => {
             const trigger = triggerRef.current;
             if (!track || !trigger) return;
 
-            // Heading animation
+            // ── Heading entrance animation ──
             gsap.fromTo(".projects-main-heading",
                 { y: 30, opacity: 0 },
                 {
@@ -292,65 +316,86 @@ const Projects = () => {
                 }
             );
 
-            // Calculate precise horizontal scroll width
+            // ── Card stagger entrance ──
+            const cards = track.querySelectorAll('.project-card');
+            gsap.fromTo(cards,
+                { y: 60, opacity: 0, scale: 0.92 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.7,
+                    ease: "power3.out",
+                    stagger: 0.08,
+                    scrollTrigger: {
+                        trigger: trigger,
+                        start: "top 70%",
+                        toggleActions: "play none none none"
+                    }
+                }
+            );
+
+            // ── Precise horizontal scroll distance ──
             const getScrollDistance = () => {
-                const totalWidth = track.scrollWidth;
-                const viewWidth = window.innerWidth;
-                return Math.max(0, totalWidth - viewWidth + 160);
+                return Math.max(0, track.scrollWidth - window.innerWidth + 160);
             };
 
-            // Direct DOM update on scroll for 0 React re-renders & 60FPS smoothness
+            // ── Batched DOM update tracker ──
             let lastIdx = 0;
+            let rafId = 0;
 
-            const pinTimeline = gsap.to(track, {
+            // ── Main horizontal scroll tween ──
+            gsap.to(track, {
                 x: () => -getScrollDistance(),
                 ease: "none",
                 scrollTrigger: {
                     trigger: trigger,
                     start: "top top",
                     end: () => `+=${getScrollDistance()}`,
-                    scrub: 0.5,
+                    scrub: true,       // Direct 1:1 — no interpolation lag
                     pin: true,
                     anticipatePin: 1,
                     invalidateOnRefresh: true,
                     fastScrollEnd: true,
                     onUpdate: (self) => {
-                        const progress = self.progress;
-                        const pct = Math.round(progress * 100);
-                        
-                        // Direct DOM manipulation - 0 React re-renders
-                        if (progressTextRef.current) {
-                            progressTextRef.current.textContent = `${pct}%`;
-                        }
-                        if (progressBarRef.current) {
-                            progressBarRef.current.style.width = `${pct}%`;
-                        }
+                        // Cancel any pending frame to avoid stacking
+                        if (rafId) cancelAnimationFrame(rafId);
 
-                        const activeIdx = Math.min(
-                            PROJECTS_DATA.length - 1,
-                            Math.floor(progress * PROJECTS_DATA.length)
-                        );
+                        rafId = requestAnimationFrame(() => {
+                            const progress = self.progress;
+                            const pct = Math.round(progress * 100);
 
-                        if (activeIdx !== lastIdx) {
-                            lastIdx = activeIdx;
-                            if (activeTitleRef.current) {
-                                activeTitleRef.current.textContent = PROJECTS_DATA[activeIdx].title;
+                            // Batch all DOM writes into one frame
+                            if (progressTextRef.current) {
+                                progressTextRef.current.textContent = `${pct}%`;
                             }
-                            if (activeIndexRef.current) {
-                                activeIndexRef.current.textContent = PROJECTS_DATA[activeIdx].index;
+                            if (progressBarRef.current) {
+                                progressBarRef.current.style.transform = `scaleX(${progress})`;
                             }
 
-                            // Update active nav pill styling
-                            navPillsRef.current.forEach((pill, i) => {
-                                if (pill) {
-                                    if (i === activeIdx) {
-                                        pill.className = "px-2.5 py-1 rounded-md text-[10px] font-mono transition-all cursor-pointer border bg-accent/20 border-accent text-white font-bold";
-                                    } else {
-                                        pill.className = "px-2.5 py-1 rounded-md text-[10px] font-mono transition-all cursor-pointer border bg-white/[0.02] border-white/[0.06] text-white/40 hover:text-white";
-                                    }
+                            const activeIdx = Math.min(
+                                PROJECTS_DATA.length - 1,
+                                Math.floor(progress * PROJECTS_DATA.length)
+                            );
+
+                            if (activeIdx !== lastIdx) {
+                                lastIdx = activeIdx;
+                                if (activeTitleRef.current) {
+                                    activeTitleRef.current.textContent = PROJECTS_DATA[activeIdx].title;
                                 }
-                            });
-                        }
+                                if (activeIndexRef.current) {
+                                    activeIndexRef.current.textContent = PROJECTS_DATA[activeIdx].index;
+                                }
+
+                                // Swap active class — only touch the two affected pills
+                                const pills = navPillsRef.current;
+                                pills.forEach((pill, i) => {
+                                    if (!pill) return;
+                                    const isActive = i === activeIdx;
+                                    pill.setAttribute('data-active', isActive ? 'true' : 'false');
+                                });
+                            }
+                        });
                     }
                 }
             });
@@ -361,8 +406,8 @@ const Projects = () => {
         return () => ctx.revert();
     }, []);
 
-    // Quick Jump button handler
-    const scrollToProject = (index) => {
+    // ── Quick Jump handler ──
+    const scrollToProject = useCallback((index) => {
         const trigger = triggerRef.current;
         const track = trackRef.current;
         if (!trigger || !track) return;
@@ -376,30 +421,30 @@ const Projects = () => {
             top: targetScroll,
             behavior: 'smooth'
         });
-    };
+    }, []);
 
     return (
-        <section 
-            id="projects" 
-            ref={sectionRef} 
+        <section
+            id="projects"
+            ref={sectionRef}
             className="relative bg-dark border-y border-white/5 overflow-hidden"
         >
             {/* Pinned Scroll Container */}
-            <div 
-                ref={triggerRef} 
+            <div
+                ref={triggerRef}
                 className="h-screen w-full flex flex-col justify-between py-5 sm:py-8 px-4 sm:px-8 md:px-14 overflow-hidden relative"
             >
-                {/* Ambient Glows */}
+                {/* Ambient Glows — reduced blur for performance */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-                    <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] rounded-full bg-accent/8 filter blur-[150px]" />
-                    <div className="absolute bottom-[20%] left-[5%] w-[450px] h-[450px] rounded-full bg-cyan-500/5 filter blur-[140px]" />
+                    <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] rounded-full bg-accent/8 ambient-glow" />
+                    <div className="absolute bottom-[20%] left-[5%] w-[450px] h-[450px] rounded-full bg-cyan-500/5 ambient-glow" />
                 </div>
 
-                {/* Top Header & Progress */}
+                {/* ── Top Header & Progress ── */}
                 <div className="projects-main-heading relative z-20 flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/[0.06] pb-3 sm:pb-4 gap-3">
                     <div>
                         <div className="flex items-center space-x-2 font-mono text-[11px] text-accent uppercase tracking-widest mb-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-ping" />
+                            <span className="w-1.5 h-1.5 rounded-full bg-accent live-dot" />
                             <span>FEATURED CASE STUDIES</span>
                         </div>
                         <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white flex items-center">
@@ -407,7 +452,7 @@ const Projects = () => {
                         </h2>
                     </div>
 
-                    {/* Project Navigator Pills (Click to jump to any project) */}
+                    {/* Project Navigator Pills */}
                     <div className="flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-none">
                         <div className="hidden lg:flex items-center space-x-1.5 mr-2">
                             {PROJECTS_DATA.map((p, i) => (
@@ -415,11 +460,8 @@ const Projects = () => {
                                     key={p.id}
                                     ref={(el) => (navPillsRef.current[i] = el)}
                                     onClick={() => scrollToProject(i)}
-                                    className={`px-2.5 py-1 rounded-md text-[10px] font-mono transition-all cursor-pointer border ${
-                                        i === 0
-                                            ? "bg-accent/20 border-accent text-white font-bold"
-                                            : "bg-white/[0.02] border-white/[0.06] text-white/40 hover:text-white"
-                                    }`}
+                                    data-active={i === 0 ? 'true' : 'false'}
+                                    className="nav-pill"
                                 >
                                     {p.index}. {p.title.split(' ')[0]}
                                 </button>
@@ -430,40 +472,35 @@ const Projects = () => {
                         <div className="px-3 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.08] text-white/70 flex items-center space-x-2 text-xs font-mono">
                             <span ref={progressTextRef} className="text-accent font-semibold">0%</span>
                             <div className="w-16 sm:w-20 h-1 bg-white/10 rounded-full overflow-hidden">
-                                <div 
+                                <div
                                     ref={progressBarRef}
-                                    className="h-full bg-accent transition-all duration-75"
-                                    style={{ width: '0%' }}
+                                    className="h-full bg-accent origin-left"
+                                    style={{ transform: 'scaleX(0)' }}
                                 />
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* Horizontal Sliding Track of Project Cards */}
+                {/* ── Horizontal Sliding Track ── */}
                 <div className="relative z-10 flex-1 flex items-center overflow-visible my-3">
-                    <div 
-                        ref={trackRef} 
-                        className="flex space-x-6 sm:space-x-8 md:space-x-10 items-center pl-2 sm:pl-4 will-change-transform"
-                        style={{
-                            transform: 'translate3d(0, 0, 0)',
-                            backfaceVisibility: 'hidden'
-                        }}
+                    <div
+                        ref={trackRef}
+                        className="flex space-x-6 sm:space-x-8 md:space-x-10 items-center pl-2 sm:pl-4 gpu-track"
                     >
-                        {PROJECTS_DATA.map((project, idx) => (
+                        {PROJECTS_DATA.map((project) => (
                             <ProjectCard
                                 key={project.id}
                                 project={project}
-                                onSelect={() => scrollToProject(idx)}
                             />
                         ))}
                     </div>
                 </div>
 
-                {/* Bottom Footer Telemetry */}
+                {/* ── Bottom Footer Telemetry ── */}
                 <div className="relative z-20 flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-white/40 border-t border-white/[0.06] pt-2.5">
                     <span>
-                        VIEWING: <span ref={activeTitleRef} className="text-white font-bold">{PROJECTS_DATA[0].title}</span> (<span ref={activeIndexRef}>{PROJECTS_DATA[0].index}</span> / 07)
+                        VIEWING: <span ref={activeTitleRef} className="text-white font-bold">{PROJECTS_DATA[0].title}</span> (<span ref={activeIndexRef}>{PROJECTS_DATA[0].index}</span> / 08)
                     </span>
                     <span className="hidden sm:inline text-accent">
                         ✦ SCROLL MOUSE DOWN TO SLIDE PROJECTS →
